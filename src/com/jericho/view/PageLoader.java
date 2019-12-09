@@ -72,6 +72,13 @@ public final class PageLoader {
 		}
 	}
 	
+	/**
+	 * Closes the Stage that contains this current pane.
+	 */
+	public void close() {
+		SceneChanger.exit(this.currentPane);
+	}
+	
 	private static class SceneChanger {
 		
 		/**
@@ -91,6 +98,16 @@ public final class PageLoader {
 	    	
 	   		Stage currentStage = (Stage) currentPane.getScene().getWindow();
 	   		currentStage.getScene().setRoot(loadingPane);
+		}
+		
+		/**
+		 * Closes the Stage that contains currentPane
+		 * 
+		 * @param currentPane the pane contained in the desired stage.
+		 */
+		public static void exit(Pane currentPane) {
+			Stage stage = (Stage) currentPane.getScene().getWindow();
+			stage.close();
 		}
 	}
 }

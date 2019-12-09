@@ -59,7 +59,8 @@ public class MainPageCodeBehind implements MVVM {
     
     @FXML
     private void onCloseMenuItemAction(ActionEvent event) {
-
+    	PageLoader uiLoader = new PageLoader(this.pane, this.viewModel);
+    	uiLoader.close();
     }
 
     @FXML
