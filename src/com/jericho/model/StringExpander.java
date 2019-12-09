@@ -9,7 +9,7 @@ public class StringExpander {
 	public StringExpander(StringBuilder sb) {
 		this.sb = sb;
 		this.currentIndex = 0;
-		this.isPaused = false;
+		this.pause();
 	}
 	
 	public String getNextString() {
@@ -29,5 +29,9 @@ public class StringExpander {
 	
 	public void toggle() {
 		this.isPaused = !this.isPaused;
+	}
+	
+	public void pause() {
+		this.isPaused = false;
 	}
 }

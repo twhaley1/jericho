@@ -43,7 +43,6 @@ public class TextReader extends Task<StringBuilder> {
 		this.frameHandler.stop();
 		this.frameHandler.fireAllStandardActions();
 		
-		
 		return sb;
 	}
 	

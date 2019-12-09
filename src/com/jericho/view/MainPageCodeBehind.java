@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -24,6 +25,9 @@ public class MainPageCodeBehind implements MVVM {
 	
 	@FXML
     private BorderPane pane;
+	
+	@FXML
+	private MenuItem clearMenuItem;
 	
 	@FXML
 	private ScrollPane textScrollPane;
@@ -55,6 +59,11 @@ public class MainPageCodeBehind implements MVVM {
     	
     	this.viewModel = viewModel;
     	this.setViewModelBindings();
+    }
+    
+    @FXML
+    private void onClearMenuItemAction(ActionEvent event) {
+    	this.viewModel.clearContents();
     }
     
     @FXML
@@ -94,6 +103,7 @@ public class MainPageCodeBehind implements MVVM {
     	this.pauseButton.disableProperty().bind(this.viewModel.isLoadingProperty().
     			or(this.viewModel.isPausedProperty()).
     			or(this.viewModel.isPlayingProperty().not()));
+    	this.clearMenuItem.disableProperty().bind(this.viewModel.contentsProperty().isNull());
     }
     
     private void setComponentBindings() {

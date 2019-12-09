@@ -32,6 +32,7 @@ public class ViewModel {
     private BooleanProperty isPausedProperty;
 	
 	private StringExpander readContents;
+	private ControlledFrameHandler<Void> textControl;
 	
 	public ViewModel() {
 		this.initializeProperties();
@@ -56,12 +57,12 @@ public class ViewModel {
 			this.contentsProperty.setValue("");
 			this.readContents.reset();
 			
-	    	ControlledFrameHandler<Void> handler = new ControlledFrameHandler<Void>(1);
-	    	handler.addAction(nullParam -> this.contentsProperty.setValue(this.readContents.getNextString()));
-	    	handler.addActionOnCompletion(nullParam -> this.isCompleteProperty.setValue(true));
-	    	handler.addActionOnCompletion(nullParam -> this.isPlayingProperty.setValue(false));
-	    	handler.addPredicate(nullParam -> !this.readContents.isComplete());
-	    	handler.start();	
+	    	this.textControl = new ControlledFrameHandler<Void>(1);
+	    	this.textControl.addAction(nullParam -> this.contentsProperty.setValue(this.readContents.getNextString()));
+	    	this.textControl.addActionOnCompletion(nullParam -> this.isCompleteProperty.setValue(true));
+	    	this.textControl.addActionOnCompletion(nullParam -> this.isPlayingProperty.setValue(false));
+	    	this.textControl.addPredicate(nullParam -> !this.readContents.isComplete());
+	    	this.textControl.start();	
 		} else {
 			this.readContents.toggle();
 			this.isPlayingProperty.setValue(true);
@@ -73,6 +74,16 @@ public class ViewModel {
 		this.isPlayingProperty.setValue(false);
 		this.isPausedProperty.setValue(true);
 		this.readContents.toggle();
+	}
+	
+	public void clearContents() {
+		this.contentsProperty.setValue("");
+		this.readContents.reset();
+		this.readContents.pause();
+		this.textControl.stop();
+		this.isPlayingProperty.setValue(false);
+		this.isPausedProperty.setValue(false);
+		this.isCompleteProperty.setValue(false);
 	}
 	
 	private void initializeProperties() {
