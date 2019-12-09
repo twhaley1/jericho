@@ -18,12 +18,12 @@ import javafx.stage.Stage;
  */
 public final class PageLoader {
 
-	private static final String LOADING_PAGE = "LoadingPage.fxml";
+	private static final String SETTINGS_PAGE = "SettingsPage.fxml";
 	private static final String MAIN_PAGE = "MainPage.fxml";
 	
 	private static final String CURRENT_PANE_NULL = "currentPane can not be null.";
 	
-	private URL loadingPageUrl;
+	private URL settingsPageUrl;
 	private URL mainPageUrl;
 	private Pane currentPane;
 	private ViewModel viewModel;
@@ -46,16 +46,16 @@ public final class PageLoader {
     	
     	this.viewModel = viewModel;
 		this.currentPane = currentPane;
-		this.loadingPageUrl = this.getClass().getResource(LOADING_PAGE);
+		this.settingsPageUrl = this.getClass().getResource(SETTINGS_PAGE);
 		this.mainPageUrl = this.getClass().getResource(MAIN_PAGE);
 	}
 	
 	/**
 	 * Transitions the application to the loading page.
 	 */
-	public void changeToLoadingPage() {
+	public void changeToSettingsPage() {
 		try {
-			SceneChanger.changeScene(this.loadingPageUrl, this.currentPane, this.viewModel);	
+	   		SceneChanger.changeScene(this.settingsPageUrl, this.currentPane, this.viewModel);
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
@@ -99,6 +99,7 @@ public final class PageLoader {
 	   		Stage currentStage = (Stage) currentPane.getScene().getWindow();
 	   		currentStage.getScene().setRoot(loadingPane);
 		}
+		
 		
 		/**
 		 * Closes the Stage that contains currentPane

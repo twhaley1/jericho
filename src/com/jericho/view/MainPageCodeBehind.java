@@ -62,6 +62,12 @@ public class MainPageCodeBehind implements MVVM {
     }
     
     @FXML
+    private void onSettingsMenuItemAction(ActionEvent event) {
+    	PageLoader loader = new PageLoader(this.pane, this.viewModel);
+    	loader.changeToSettingsPage();
+    }
+    
+    @FXML
     private void onClearMenuItemAction(ActionEvent event) {
     	this.viewModel.clearContents();
     }
