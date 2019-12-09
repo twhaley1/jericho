@@ -8,7 +8,7 @@ import javafx.concurrent.Task;
 
 public class TextReader extends Task<StringBuilder> {
 
-	private FrameHandler<Double> frameHandler;
+	private FrameActions<Double> frameHandler;
 	private File file;
 	private double progress;
 	
@@ -16,7 +16,8 @@ public class TextReader extends Task<StringBuilder> {
 		this.file = file;
 		this.progress = 0.0;
 		
-		this.frameHandler = new FrameHandler<Double>();
+		// TODO: Create a concrete implementation of the FrameActions/ControlledFrameActions classes.
+		//this.frameHandler = new FrameActions<Double>();
 		this.frameHandler.addAction(callback);
 		this.frameHandler.setParameter(this.progress);
 	}

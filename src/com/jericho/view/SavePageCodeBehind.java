@@ -3,10 +3,10 @@ package com.jericho.view;
 import java.io.File;
 import java.io.IOException;
 
-import com.jericho.model.MVVM;
 import com.jericho.model.Setting;
 import com.jericho.model.SettingSaver;
-import com.jericho.viewmodel.ViewModel;
+import com.jericho.view.viewtransitions.PageLoader;
+import com.jericho.viewmodel.AbstractViewController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +24,7 @@ import javafx.scene.text.Font;
  * @author thomaswhaley
  *
  */
-public class SavePageCodeBehind implements MVVM {
+public class SavePageCodeBehind extends AbstractViewController {
 
 	@FXML
 	private AnchorPane pane;
@@ -37,8 +37,6 @@ public class SavePageCodeBehind implements MVVM {
 
     @FXML
     private Button saveButton;
-    
-    private ViewModel viewModel;
 
     @FXML
     private void initialize() {
@@ -69,7 +67,7 @@ public class SavePageCodeBehind implements MVVM {
 			alert.showAndWait();
 		}
     	
-    	PageLoader loader = new PageLoader(this.pane, this.viewModel);
+    	PageLoader loader = new PageLoader(this.pane, this.getViewModel());
     	loader.changeToMainPage();
     }
     
@@ -77,14 +75,5 @@ public class SavePageCodeBehind implements MVVM {
     	this.fontComboBox.setValue(Font.getDefault().getFamily());
     	this.fontComboBox.getItems().setAll(Font.getFamilies());
     }
-
-	@Override
-	public void setViewModel(ViewModel viewModel) {
-		if (viewModel == null) {
-			throw new IllegalArgumentException();
-		}
-		
-		this.viewModel = viewModel;
-	}
 
 }

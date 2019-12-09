@@ -1,9 +1,10 @@
-package com.jericho.view;
+package com.jericho.view.viewtransitions;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import com.jericho.model.MVVM;
+import com.jericho.viewmodel.AbstractViewController;
 import com.jericho.viewmodel.ViewModel;
 
 import javafx.fxml.FXMLLoader;
@@ -11,15 +12,15 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
- * A class that can transition the application to different pages.
+ * A class that can transition the application to different pages/scenes.
  * 
  * @author thomaswhaley
  *
  */
 public final class PageLoader {
 
-	private static final String SETTINGS_PAGE = "SettingsPage.fxml";
-	private static final String MAIN_PAGE = "MainPage.fxml";
+	private static final String SETTINGS_PAGE = ".." + File.separator + "SettingsPage.fxml";
+	private static final String MAIN_PAGE = ".." + File.separator + "MainPage.fxml";
 	
 	private static final String CURRENT_PANE_NULL = "currentPane can not be null.";
 	
@@ -93,7 +94,7 @@ public final class PageLoader {
 	    	FXMLLoader loader = new FXMLLoader();
 	    	loader.setLocation(fxml);
 	    	Pane loadingPane = loader.load();
-	    	MVVM controller = (MVVM) loader.getController();
+	    	AbstractViewController controller = (AbstractViewController) loader.getController();
 	    	controller.setViewModel(viewModel);
 	    	
 	   		Stage currentStage = (Stage) currentPane.getScene().getWindow();

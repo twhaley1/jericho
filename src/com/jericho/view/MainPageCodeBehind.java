@@ -2,7 +2,9 @@ package com.jericho.view;
 
 import java.io.File;
 
-import com.jericho.model.MVVM;
+import com.jericho.view.fileselection.UserTextFileSelection;
+import com.jericho.view.viewtransitions.PageLoader;
+import com.jericho.viewmodel.AbstractViewController;
 import com.jericho.viewmodel.ViewModel;
 
 import javafx.event.ActionEvent;
@@ -21,7 +23,7 @@ import javafx.stage.Window;
  * @author thomaswhaley
  *
  */
-public class MainPageCodeBehind implements MVVM {
+public class MainPageCodeBehind extends AbstractViewController {
 	
 	@FXML
     private BorderPane pane;
@@ -43,8 +45,6 @@ public class MainPageCodeBehind implements MVVM {
     
     @FXML
     private ProgressBar loadingProgressBar;
-
-    private ViewModel viewModel;
     
     @FXML
     private void initialize() {
@@ -53,28 +53,25 @@ public class MainPageCodeBehind implements MVVM {
     
     @Override
     public void setViewModel(ViewModel viewModel) {
-    	if (viewModel == null) {
-    		throw new IllegalArgumentException();
-    	}
+    	super.setViewModel(viewModel);
     	
-    	this.viewModel = viewModel;
     	this.setViewModelBindings();
     }
     
     @FXML
     private void onSettingsMenuItemAction(ActionEvent event) {
-    	PageLoader loader = new PageLoader(this.pane, this.viewModel);
+    	PageLoader loader = new PageLoader(this.pane, this.getViewModel());
     	loader.changeToSettingsPage();
     }
     
     @FXML
     private void onClearMenuItemAction(ActionEvent event) {
-    	this.viewModel.clearContents();
+    	this.getViewModel().clearContents();
     }
     
     @FXML
     private void onCloseMenuItemAction(ActionEvent event) {
-    	PageLoader uiLoader = new PageLoader(this.pane, this.viewModel);
+    	PageLoader uiLoader = new PageLoader(this.pane, this.getViewModel());
     	uiLoader.close();
     }
 
@@ -85,31 +82,31 @@ public class MainPageCodeBehind implements MVVM {
     	File selectedFile = selector.selectFile();
     	
     	if (selectedFile != null) {	
-    		this.viewModel.loadTextFromFile(selectedFile);
+    		this.getViewModel().loadTextFromFile(selectedFile);
     	}	
     }
 
     @FXML
     private void onPauseButtonAction(ActionEvent event) {
-    	this.viewModel.pauseIncreasingContents();
+    	this.getViewModel().pauseIncreasingContents();
     }
 
     @FXML
     private void onPlayButtonAction(ActionEvent event) {
-    	this.viewModel.iterativelyIncreaseContents();
+    	this.getViewModel().iterativelyIncreaseContents();
     }
     
     private void setViewModelBindings() {
-    	this.textLabel.textProperty().bind(this.viewModel.contentsProperty());
-    	this.loadingProgressBar.progressProperty().bindBidirectional(this.viewModel.progressProperty());
-    	this.playButton.disableProperty().bind(this.viewModel.isLoadingProperty().
-    			or(this.viewModel.isPlayingProperty()).
-    			or(this.viewModel.contentsProperty().isNull()));
-    	this.loadingProgressBar.visibleProperty().bind(this.viewModel.isLoadingProperty());
-    	this.pauseButton.disableProperty().bind(this.viewModel.isLoadingProperty().
-    			or(this.viewModel.isPausedProperty()).
-    			or(this.viewModel.isPlayingProperty().not()));
-    	this.clearMenuItem.disableProperty().bind(this.viewModel.contentsProperty().isNull());
+    	this.textLabel.textProperty().bind(this.getViewModel().contentsProperty());
+    	this.loadingProgressBar.progressProperty().bindBidirectional(this.getViewModel().progressProperty());
+    	this.playButton.disableProperty().bind(this.getViewModel().isLoadingProperty().
+    			or(this.getViewModel().isPlayingProperty()).
+    			or(this.getViewModel().contentsProperty().isNull()));
+    	this.loadingProgressBar.visibleProperty().bind(this.getViewModel().isLoadingProperty());
+    	this.pauseButton.disableProperty().bind(this.getViewModel().isLoadingProperty().
+    			or(this.getViewModel().isPausedProperty()).
+    			or(this.getViewModel().isPlayingProperty().not()));
+    	this.clearMenuItem.disableProperty().bind(this.getViewModel().contentsProperty().isNull());
     }
     
     private void setComponentBindings() {
