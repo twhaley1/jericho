@@ -1,5 +1,12 @@
 package com.jericho.model;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  * A class that uses a StringBuilder to incrementally build up 
  * strings one character at a time.
@@ -7,9 +14,13 @@ package com.jericho.model;
  * @author thomaswhaley
  *
  */
-public class StringExpander {
+public class StringExpander implements Commandable {
 
 	private StringBuilder builder;
+	
+	private StringProperty contentProperty;
+	private BooleanProperty isCompleteProperty;
+	
 	private int currentIndex;
 	private boolean isPaused;
 	
@@ -26,65 +37,59 @@ public class StringExpander {
 		}
 		
 		this.builder = builder;
+		this.contentProperty = new SimpleStringProperty();
+		this.isCompleteProperty = new SimpleBooleanProperty();
+		
 		this.currentIndex = 0;
 		this.unPause();
 	}
-	
-	/**
-	 * Gets the next string from the string builder that has one additional 
-	 * character than the last string returned from getNextString(). This 
-	 * method can throw a StringIndexOutOfBoundsException if the number of 
-	 * calls to getNextString() exceeds the length of this StringExpander's 
-	 * StringBuilder. 
-	 * 
-	 * @return the next string.
-	 */
-	public String getNextString() {
-		if (!this.isPaused) {
-			this.currentIndex++;	
-		}
-		
-		return this.builder.substring(0, this.currentIndex);
+
+	@Override
+	public void execute() {
+		this.incrementContent();
+	}
+
+	@Override
+	public boolean canExecute() {
+		return !this.isComplete();
+	}
+
+	@Override
+	public void dispose() {
+		this.isCompleteProperty.setValue(true);
+		this.reset();
 	}
 	
-	/**
-	 * Determines if this string expander has reached the end of its 
-	 * derived string builder. If this method returns true, then
-	 * any further calls to getNextString() will result in a 
-	 * StringIndexOutOfBoundsException. 
-	 * 
-	 * @return true if this expander is complete; false otherwise.
-	 */
-	public boolean isComplete() {
-		return this.builder.length() == this.currentIndex;
+	public ReadOnlyStringProperty contentProperty() {
+		return this.contentProperty;
 	}
 	
-	/**
-	 * Resets this string expander. As long as this string expander's 
-	 * derived string builder has a length greater than or equal to 1, 
-	 * then this method ensures that the next call to getNextString() will
-	 * not throw an exception.
-	 */
+	public ReadOnlyBooleanProperty isCompleteProperty() {
+		return this.isCompleteProperty;
+	}
+	
+	public void pause() {
+		this.isPaused = true;
+	}
+	
+	public void unPause() {
+		this.isPaused = false;
+	}
+	
 	public void reset() {
 		this.currentIndex = 0;
 	}
 	
-	/**
-	 * Toggles the pausing effect on this expander. If the current
-	 * state is paused, then this method will unpause the expander. If the
-	 * current state is unpaused, then this method will pause the expander.
-	 */
-	public void toggle() {
-		this.isPaused = !this.isPaused;
+	private void incrementContent() {
+		if (!this.isPaused) {
+			this.currentIndex++;	
+		}
+		
+		this.contentProperty.setValue(this.builder.substring(0, this.currentIndex));
 	}
 	
-	/**
-	 * unpauses this expander. A call to this method will ensure that successive
-	 * calls to getNextString() will result in a string with length greater than
-	 * the string previously returned by getNextString(). This assumes that the 
-	 * getNextString() method does not throw a StringIndexOutOfBoundsException.
-	 */
-	public void unPause() {
-		this.isPaused = false;
+	private boolean isComplete() {
+		return this.builder.length() == this.currentIndex;
 	}
+	
 }

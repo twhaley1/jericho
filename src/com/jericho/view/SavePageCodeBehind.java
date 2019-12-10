@@ -52,11 +52,9 @@ public class SavePageCodeBehind extends AbstractViewController {
     	String path = this.getClass().getResource("../settings").getPath();
     	File saveFile = new File(path + File.separator + "jericho_save.ser");
     	
-    	SettingSaver saver = new SettingSaver(setting);
-    	
     	try {
     		saveFile.createNewFile();
-			saver.save(saveFile);
+			SettingSaver.save(saveFile, setting);
 		} catch (IOException e) {
 			System.err.println("Could not save settings.");
 			

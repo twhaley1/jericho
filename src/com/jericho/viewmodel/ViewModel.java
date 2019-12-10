@@ -2,17 +2,18 @@ package com.jericho.viewmodel;
 
 import java.io.File;
 
-import com.jericho.model.ControlledFrameActions;
+import com.jericho.model.ControlledFrameAction;
 import com.jericho.model.StringExpander;
 import com.jericho.model.TextReader;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.concurrent.Task;
 
 /**
  * The view model for Jericho.
@@ -25,14 +26,13 @@ public class ViewModel {
 	private DoubleProperty progressProperty;
 	
 	private StringProperty contentsProperty;
+	private IntegerProperty speedProperty;
 	
-	private BooleanProperty isCompleteProperty;
 	private BooleanProperty isLoadingProperty;
     private BooleanProperty isPlayingProperty;
     private BooleanProperty isPausedProperty;
 	
 	private StringExpander readContents;
-	private ControlledFrameActions<Void> textControl;
 	
 	/**
 	 * Creates a new ViewMoidel object. All property initializations occur
@@ -62,14 +62,37 @@ public class ViewModel {
 		
 		this.clearProperties();
 		this.isLoadingProperty.setValue(true);
-		Task<StringBuilder> task = new TextReader(file, progress -> this.progressProperty.setValue(progress));
+		
+		this.startLoadingTask(file);
+	}
+	
+	private void startLoadingTask(File file) {
+		TextReader task = new TextReader(file);
+		task.getLoadingProgress().addListener((observable, oldValue, newValue) -> {
+			this.progressProperty.setValue(newValue);
+		});
 		task.setOnSucceeded(event -> {
 			this.readContents = new StringExpander(task.getValue());
 			this.contentsProperty.setValue("");
 			this.isLoadingProperty.setValue(false);
+			this.addListenersForReadContents();
 		});
 		Thread loadThread = new Thread(task);
 		loadThread.start();
+	}
+	
+	private void addListenersForReadContents() {
+		this.readContents.contentProperty().addListener((observable, oldValue, newValue) -> {
+			this.contentsProperty.setValue(newValue);
+		});
+		this.readContents.isCompleteProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue) {
+				this.isPlayingProperty.setValue(false);
+				this.isPausedProperty.setValue(true);
+				this.readContents.reset();
+				this.readContents.pause();
+			}
+		});
 	}
 	
 	/**
@@ -79,20 +102,17 @@ public class ViewModel {
 	 * 
 	 * @postcondition isPausedProperty() == false && isPlayingProperty() == true
 	 */
-	public void iterativelyIncreaseContents() {
+	public void startPlaying() {
 		if (this.isPausedProperty.not().getValue() && this.isPlayingProperty.not().getValue()) {
 			this.isPlayingProperty.setValue(true);
 			this.contentsProperty.setValue("");
 			this.readContents.reset();
 			
-	    	this.textControl = new ControlledFrameActions<Void>(1);
-	    	this.textControl.addAction(nullParam -> this.contentsProperty.setValue(this.readContents.getNextString()));
-	    	this.textControl.addActionOnCompletion(nullParam -> this.isCompleteProperty.setValue(true));
-	    	this.textControl.addActionOnCompletion(nullParam -> this.isPlayingProperty.setValue(false));
-	    	this.textControl.addPredicate(nullParam -> !this.readContents.isComplete());
-	    	this.textControl.start();	
+			this.speedProperty.setValue(2);
+			ControlledFrameAction timer = new ControlledFrameAction(this.readContents, this.speedProperty.get());
+			timer.start();
 		} else {
-			this.readContents.toggle();
+			this.readContents.unPause();
 			this.isPlayingProperty.setValue(true);
 			this.isPausedProperty.setValue(false);
 		}
@@ -107,7 +127,7 @@ public class ViewModel {
 	public void pauseIncreasingContents() {
 		this.isPlayingProperty.setValue(false);
 		this.isPausedProperty.setValue(true);
-		this.readContents.toggle();
+		this.readContents.pause();
 	}
 	
 	/**
@@ -121,26 +141,27 @@ public class ViewModel {
 	public void clearContents() {
 		this.contentsProperty.setValue("");
 		this.readContents.reset();
-		this.readContents.unPause();
-		this.textControl.stop();
+		this.readContents.pause();
 		this.isPlayingProperty.setValue(false);
-		this.isPausedProperty.setValue(false);
-		this.isCompleteProperty.setValue(false);
+		this.isPausedProperty.setValue(true);
 	}
 	
 	private void initializeProperties() {
 		this.progressProperty = new SimpleDoubleProperty();
 		this.contentsProperty = new SimpleStringProperty();
-		this.isCompleteProperty = new SimpleBooleanProperty();
 		this.isLoadingProperty = new SimpleBooleanProperty();
     	this.isPlayingProperty = new SimpleBooleanProperty();
     	this.isPausedProperty = new SimpleBooleanProperty();
+    	this.speedProperty = new SimpleIntegerProperty();
 	}
 	
 	private void clearProperties() {
 		this.progressProperty.setValue(0);
 		this.contentsProperty.setValue(null);
-		this.isCompleteProperty.setValue(false);
+	}
+	
+	public IntegerProperty speedProperty() {
+		return this.speedProperty;
 	}
 	
 	/**
@@ -169,16 +190,6 @@ public class ViewModel {
 	 */
 	public BooleanProperty isPlayingProperty() {
 		return this.isPlayingProperty;
-	}
-	
-	/**
-	 * A property indicating if the incrementing of contentsProperty()
-	 * is complete or not.
-	 * 
-	 * @return the isCompleteProperty.
-	 */
-	public BooleanProperty isCompleteProperty() {
-		return this.isCompleteProperty;
 	}
 	
 	/**

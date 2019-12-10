@@ -2,24 +2,27 @@ package com.jericho.model;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.util.function.Consumer;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.concurrent.Task;
 
 public class TextReader extends Task<StringBuilder> {
 
-	private FrameActions<Double> frameHandler;
 	private File file;
-	private double progress;
+	private DoubleProperty progress;
 	
-	public TextReader(File file, Consumer<Double> callback) {
-		this.file = file;
-		this.progress = 0.0;
+	public TextReader(File file) {
+		if (file == null) {
+			throw new IllegalArgumentException();
+		}
+		if (!file.exists()) {
+			throw new IllegalArgumentException();
+		}
 		
-		// TODO: Create a concrete implementation of the FrameActions/ControlledFrameActions classes.
-		//this.frameHandler = new FrameActions<Double>();
-		this.frameHandler.addAction(callback);
-		this.frameHandler.setParameter(this.progress);
+		this.file = file;
+		this.progress = new SimpleDoubleProperty();
 	}
 
 	@Override
@@ -30,7 +33,6 @@ public class TextReader extends Task<StringBuilder> {
 		double numberOfBytes = contents.length;
 		double accumulatedBytes = 0.0;
 		
-		this.frameHandler.start();
 		for (byte currentByte : contents) {
 			Character content = (char) currentByte;
 			if (!content.toString().equals(System.lineSeparator())) {
@@ -38,13 +40,13 @@ public class TextReader extends Task<StringBuilder> {
 			}
 			accumulatedBytes++;
 				
-			this.progress = accumulatedBytes / numberOfBytes;
-			this.frameHandler.setParameter(this.progress);
+			this.progress.setValue(accumulatedBytes / numberOfBytes);
 		}
-		this.frameHandler.stop();
-		this.frameHandler.fireAllStandardActions();
 		
 		return sb;
 	}
 	
+	public ReadOnlyDoubleProperty getLoadingProgress() {
+		return this.progress;
+	}
 }

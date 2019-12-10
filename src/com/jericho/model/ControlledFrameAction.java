@@ -7,14 +7,14 @@ package com.jericho.model;
  * 
  * @author thomaswhaley
  *
- * @param <T>
  */
-public abstract class ControlledFrameActions<T> extends FrameActions<T> {
+public class ControlledFrameAction extends FrameAction {
 
 	private int frameCount;
 	private int speed;
 	
-	protected ControlledFrameActions(int speed) {
+	public ControlledFrameAction(Commandable command, int speed) {
+		super(command);
 		if (speed <= 0) {
 			throw new IllegalArgumentException();
 		}
@@ -25,7 +25,7 @@ public abstract class ControlledFrameActions<T> extends FrameActions<T> {
 
 	@Override
 	public void handle(long currentTime) {
-		if (this.canExecute()) {
+		if (this.isValidFrame()) {
 			super.handle(currentTime);	
 		}
 		
@@ -60,7 +60,7 @@ public abstract class ControlledFrameActions<T> extends FrameActions<T> {
 		return this.speed;
 	}
 	
-	private boolean canExecute() {
+	private boolean isValidFrame() {
 		return this.frameCount % this.speed == 0;
 	}
 }

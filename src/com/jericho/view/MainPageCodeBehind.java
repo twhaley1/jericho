@@ -93,7 +93,7 @@ public class MainPageCodeBehind extends AbstractViewController {
 
     @FXML
     private void onPlayButtonAction(ActionEvent event) {
-    	this.getViewModel().iterativelyIncreaseContents();
+    	this.getViewModel().startPlaying();
     }
     
     private void setViewModelBindings() {
