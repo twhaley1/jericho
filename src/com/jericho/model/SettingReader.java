@@ -12,7 +12,7 @@ import java.io.ObjectInputStream;
  * @author thomaswhaley
  *
  */
-public class SettingReader {
+public final class SettingReader {
 	
 	/**
 	 * Reads in a Setting object from the specified file.

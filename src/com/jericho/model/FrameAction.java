@@ -3,7 +3,7 @@ package com.jericho.model;
 import javafx.animation.AnimationTimer;
 
 /**
- * An abstract class that is based on an animation timer. 
+ * A class that uses executes commands based on an animation timer. 
  * 
  * @author thomaswhaley
  *
@@ -12,6 +12,13 @@ public class FrameAction extends AnimationTimer {
 
 	private Commandable command;
 	
+	/**
+	 * Creates a new FrameAction object.
+	 * 
+	 * @precondition command != null
+	 * 
+	 * @param command the command to give to this FrameAction.
+	 */
 	public FrameAction(Commandable command) {
 		if (command == null) {
 			throw new IllegalArgumentException();

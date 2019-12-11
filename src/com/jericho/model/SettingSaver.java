@@ -12,7 +12,7 @@ import java.io.ObjectOutputStream;
  * @author thomaswhaley
  *
  */
-public class SettingSaver {
+public final class SettingSaver {
 
 	/**
 	 * Saves the specified Setting object in the specified file. 

@@ -60,22 +60,43 @@ public class StringExpander implements Commandable {
 		this.reset();
 	}
 	
+	/**
+	 * Gets the current content of this expander.
+	 * 
+	 * @return the current content.
+	 */
 	public ReadOnlyStringProperty contentProperty() {
 		return this.contentProperty;
 	}
 	
+	/**
+	 * Gets whether or not this expander is finished expanding its content.
+	 * 
+	 * @return true if this expander is finished expanding; false otherwise.
+	 */
 	public ReadOnlyBooleanProperty isCompleteProperty() {
 		return this.isCompleteProperty;
 	}
 	
+	/**
+	 * Pauses this expander. Its content will not increase further
+	 * upon a call to this method.
+	 */
 	public void pause() {
 		this.isPaused = true;
 	}
 	
+	/**
+	 * Unpauses this expander. This expander's content can be extended upon.
+	 */
 	public void unPause() {
 		this.isPaused = false;
 	}
 	
+	/**
+	 * Resets this expander. Extensions upon its contents will begin
+	 * with an empty string.
+	 */
 	public void reset() {
 		this.currentIndex = 0;
 	}

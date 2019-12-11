@@ -8,11 +8,25 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.concurrent.Task;
 
+/**
+ * A class that reads text from a file on a different thread.
+ * The loading progress is trackable.
+ * 
+ * @author thomaswhaley
+ *
+ */
 public class TextReader extends Task<StringBuilder> {
 
 	private File file;
 	private DoubleProperty progress;
 	
+	/**
+	 * Creates a new TextReader object.
+	 * 
+	 * @precondition file != null && file.exists()
+	 * 
+	 * @param file the file to read the contents from.
+	 */
 	public TextReader(File file) {
 		if (file == null) {
 			throw new IllegalArgumentException();
@@ -35,17 +49,20 @@ public class TextReader extends Task<StringBuilder> {
 		
 		for (byte currentByte : contents) {
 			Character content = (char) currentByte;
-			if (!content.toString().equals(System.lineSeparator())) {
-				sb.append(content);	
-			}
+			sb.append(content);	
+			
 			accumulatedBytes++;
-				
 			this.progress.setValue(accumulatedBytes / numberOfBytes);
 		}
 		
 		return sb;
 	}
 	
+	/**
+	 * Gets the loading progress of this reader.
+	 * 
+	 * @return the loading progress.
+	 */
 	public ReadOnlyDoubleProperty getLoadingProgress() {
 		return this.progress;
 	}

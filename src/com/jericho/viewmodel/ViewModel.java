@@ -160,6 +160,11 @@ public class ViewModel {
 		this.contentsProperty.setValue(null);
 	}
 	
+	/**
+	 * A property indicating how fast the text is flowing.
+	 * 
+	 * @return the speedProperty.
+	 */
 	public IntegerProperty speedProperty() {
 		return this.speedProperty;
 	}
