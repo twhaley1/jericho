@@ -1,4 +1,4 @@
-package com.jericho.model;
+package com.jericho.model.settings;
 
 import java.io.Serializable;
 
