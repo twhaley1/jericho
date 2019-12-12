@@ -67,6 +67,7 @@ public class MainPageCodeBehind extends AbstractViewController {
     private void onSettingsMenuItemAction(ActionEvent event) {
     	PageLoader loader = new PageLoader(this.pane, this.getViewModel());
     	loader.changeToSettingsPage();
+    	this.getViewModel().pauseIncreasingContents();
     }
     
     @FXML
