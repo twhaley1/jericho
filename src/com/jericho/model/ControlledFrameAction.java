@@ -1,7 +1,7 @@
 package com.jericho.model;
 
 /**
- * An abstract extension upon a standard FrameActions object.
+ * An extension upon a standard FrameActions object.
  * ControlledFrameActions take a speed factor into account that limits what
  * frames the consumers/predicates occur on.
  * 
@@ -13,6 +13,15 @@ public class ControlledFrameAction extends FrameAction {
 	private int frameCount;
 	private int speed;
 	
+	/**
+	 * Creates a new ControlledFrameAction object.
+	 * 
+	 * @precondition command != null && speed > 0
+	 * @postcondition getSpeed() == speed
+	 * 
+	 * @param command the command to give to this ControlledFrameAction.
+	 * @param speed the speed at which the actions will execute.
+	 */
 	public ControlledFrameAction(Commandable command, int speed) {
 		super(command);
 		if (speed <= 0) {
