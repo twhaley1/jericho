@@ -5,15 +5,19 @@ import java.io.File;
 import com.jericho.model.ControlledFrameAction;
 import com.jericho.model.StringExpander;
 import com.jericho.model.TextReader;
+import com.jericho.model.settings.Setting;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.text.Font;
 
 /**
  * The view model for Jericho.
@@ -25,8 +29,11 @@ public class ViewModel {
 
 	private DoubleProperty progressProperty;
 	
-	private StringProperty contentsProperty;
+	private ObjectProperty<Setting> settingsProperty;
+	private ObjectProperty<Font> fontProperty;
 	private IntegerProperty speedProperty;
+	
+	private StringProperty contentsProperty;
 	
 	private BooleanProperty isLoadingProperty;
     private BooleanProperty isPlayingProperty;
@@ -40,6 +47,7 @@ public class ViewModel {
 	 */
 	public ViewModel() {
 		this.initializeProperties();
+		this.addSettingListener();
 	}
 	
 	/**
@@ -153,6 +161,8 @@ public class ViewModel {
     	this.isPlayingProperty = new SimpleBooleanProperty();
     	this.isPausedProperty = new SimpleBooleanProperty();
     	this.speedProperty = new SimpleIntegerProperty();
+    	this.fontProperty = new SimpleObjectProperty<Font>();
+    	this.settingsProperty = new SimpleObjectProperty<Setting>();
 	}
 	
 	private void clearProperties() {
@@ -160,6 +170,33 @@ public class ViewModel {
 		this.contentsProperty.setValue(null);
 	}
 	
+	private void addSettingListener() {
+		this.settingsProperty.addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				this.fontProperty.setValue(Font.font(newValue.getFont()));
+				this.speedProperty.setValue(newValue.getSpeed());
+			}
+		});
+	}
+	
+	/**
+	 * A property indicating the current settings for the system.
+	 * 
+	 * @return the settingsProperty.
+	 */
+    public ObjectProperty<Setting> settingsProperty() {
+		return this.settingsProperty;
+	}
+	
+    /**
+     * A property indicating the font for the contentProperty.
+     * 
+     * @return the fontProperty.
+     */
+    public ObjectProperty<Font> fontProperty() {
+    	return this.fontProperty;
+    }
+    
 	/**
 	 * A property indicating how fast the text is flowing.
 	 * 

@@ -3,10 +3,11 @@ package com.jericho.view;
 import java.io.File;
 import java.io.IOException;
 
-import com.jericho.model.Setting;
-import com.jericho.model.SettingSaver;
+import com.jericho.model.settings.Setting;
+import com.jericho.model.settings.SettingSaver;
 import com.jericho.view.viewtransitions.PageLoader;
 import com.jericho.viewmodel.AbstractViewController;
+import com.jericho.viewmodel.ViewModel;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,13 +44,20 @@ public class SavePageCodeBehind extends AbstractViewController {
     	this.setUpFontComboBox();
     }
     
+    @Override
+    public void setViewModel(ViewModel viewModel) {
+    	super.setViewModel(viewModel);
+    	
+    	this.fontComboBox.getSelectionModel().select(this.getViewModel().fontProperty().get().getFamily());
+    }
+    
     @FXML
     private void onSaveButtonAction(ActionEvent event) {
     	String selectedFont = this.fontComboBox.getSelectionModel().getSelectedItem();
     	int sliderSpeed = (int) this.textSpeedSlider.getValue();
     	Setting setting = new Setting(selectedFont, sliderSpeed);
     	
-    	String path = this.getClass().getResource("../settings").getPath();
+    	String path = this.getClass().getResource("../usersettings").getPath();
     	File saveFile = new File(path + File.separator + "jericho_save.ser");
     	
     	try {
