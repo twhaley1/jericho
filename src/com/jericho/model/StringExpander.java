@@ -28,6 +28,7 @@ public class StringExpander implements Commandable {
 	 * Creates a new StringExpander with the specified StringBuilder.
 	 * 
 	 * @precondition builder != null.
+	 * @postcondition contentProperty().get().equals(null) && isCompleteProperty().get() == false
 	 * 
 	 * @param builder the StringBuilder to give to this expander.
 	 */

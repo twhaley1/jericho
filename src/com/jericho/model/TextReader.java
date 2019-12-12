@@ -1,6 +1,7 @@
 package com.jericho.model;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 
 import javafx.beans.property.DoubleProperty;
@@ -42,6 +43,20 @@ public class TextReader extends Task<StringBuilder> {
 
 	@Override
 	protected StringBuilder call() throws Exception {
+		return this.getFileContents();
+	}
+	
+	/**
+	 * Reads the file contents from this reader's file object. Also,
+	 * updates a progress property that indicates the current progress
+	 * of reading the file.
+	 * 
+	 * @postcondition getLoadingProgress() == 1.0
+	 * 
+	 * @return a StringBuilder that contains the contents of the file.
+	 * @throws IOException if an error occurs loading the file.
+	 */
+	private StringBuilder getFileContents() throws IOException {
 		StringBuilder sb = new StringBuilder();
 		
 		byte[] contents = Files.readAllBytes(this.file.toPath());
