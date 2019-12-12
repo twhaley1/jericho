@@ -3,7 +3,6 @@ package com.jericho.view;
 import java.io.File;
 import java.io.IOException;
 
-import com.jericho.model.settings.Setting;
 import com.jericho.model.settings.SettingReader;
 import com.jericho.view.fileselection.UserTextFileSelection;
 import com.jericho.view.viewtransitions.PageLoader;
@@ -20,7 +19,6 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Font;
 import javafx.stage.Window;
 
 /**

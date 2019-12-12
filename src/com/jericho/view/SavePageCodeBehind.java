@@ -3,6 +3,7 @@ package com.jericho.view;
 import java.io.File;
 import java.io.IOException;
 
+import com.jericho.model.SpeedAdjuster;
 import com.jericho.model.settings.Setting;
 import com.jericho.model.settings.SettingSaver;
 import com.jericho.view.viewtransitions.PageLoader;
@@ -47,6 +48,9 @@ public class SavePageCodeBehind extends AbstractViewController {
     @Override
     public void setViewModel(ViewModel viewModel) {
     	super.setViewModel(viewModel);
+    	
+    	SpeedAdjuster adjuster = new SpeedAdjuster(1, 100);
+    	this.textSpeedSlider.setValue(adjuster.adjust(this.getViewModel().speedProperty().get()));
     	
     	this.fontComboBox.getSelectionModel().select(this.getViewModel().fontProperty().get().getFamily());
     }

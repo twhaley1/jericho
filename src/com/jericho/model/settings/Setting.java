@@ -2,6 +2,8 @@ package com.jericho.model.settings;
 
 import java.io.Serializable;
 
+import com.jericho.model.SpeedAdjuster;
+
 /**
  * A data class that maintains the current settings of the system.
  * 
@@ -22,6 +24,10 @@ public class Setting implements Serializable {
 	 * @param speed the speed that text is displayed when pressing play.
 	 */
 	public Setting(String font, int speed) {
+		if (font == null) {
+			throw new IllegalArgumentException();
+		}
+		
 		this.font = font;
 		this.speed = speed;
 	}
@@ -41,6 +47,7 @@ public class Setting implements Serializable {
 	 * @return the speed.
 	 */
 	public int getSpeed() {
-		return this.speed;
+		SpeedAdjuster adjuster = new SpeedAdjuster(1, 100);
+		return adjuster.adjust(this.speed);
 	}
 }

@@ -40,6 +40,7 @@ public class ViewModel {
     private BooleanProperty isPausedProperty;
 	
 	private StringExpander readContents;
+	private ControlledFrameAction readingTimer;
 	
 	/**
 	 * Creates a new ViewMoidel object. All property initializations occur
@@ -48,6 +49,7 @@ public class ViewModel {
 	public ViewModel() {
 		this.initializeProperties();
 		this.addSettingListener();
+		this.addSpeedListener();
 	}
 	
 	/**
@@ -116,9 +118,8 @@ public class ViewModel {
 			this.contentsProperty.setValue("");
 			this.readContents.reset();
 			
-			this.speedProperty.setValue(2);
-			ControlledFrameAction timer = new ControlledFrameAction(this.readContents, this.speedProperty.get());
-			timer.start();
+			this.readingTimer = new ControlledFrameAction(this.readContents, this.speedProperty.get());
+			this.readingTimer.start();
 		} else {
 			this.readContents.unPause();
 			this.isPlayingProperty.setValue(true);
@@ -175,6 +176,14 @@ public class ViewModel {
 			if (newValue != null) {
 				this.fontProperty.setValue(Font.font(newValue.getFont()));
 				this.speedProperty.setValue(newValue.getSpeed());
+			}
+		});
+	}
+	
+	private void addSpeedListener() {
+		this.speedProperty.addListener((observable, oldValue, newValue) -> {
+			if (this.readingTimer != null) {
+				this.readingTimer.setSpeed((int) newValue); 
 			}
 		});
 	}
