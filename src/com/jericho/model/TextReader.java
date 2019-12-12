@@ -24,6 +24,7 @@ public class TextReader extends Task<StringBuilder> {
 	 * Creates a new TextReader object.
 	 * 
 	 * @precondition file != null && file.exists()
+	 * @postcondition getLoadingProgress().get() == 0.0
 	 * 
 	 * @param file the file to read the contents from.
 	 */
