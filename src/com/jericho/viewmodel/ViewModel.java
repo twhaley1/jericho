@@ -31,6 +31,7 @@ public class ViewModel {
 	
 	private ObjectProperty<Setting> settingsProperty;
 	private ObjectProperty<Font> fontProperty;
+	private IntegerProperty fontSizeProperty;
 	private IntegerProperty speedProperty;
 	
 	private StringProperty contentsProperty;
@@ -162,6 +163,7 @@ public class ViewModel {
     	this.speedProperty = new SimpleIntegerProperty();
     	this.fontProperty = new SimpleObjectProperty<Font>();
     	this.settingsProperty = new SimpleObjectProperty<Setting>();
+    	this.fontSizeProperty = new SimpleIntegerProperty();
 	}
 	
 	private void setPropertiesForLoading() {
@@ -181,7 +183,7 @@ public class ViewModel {
 	private void addSettingListener() {
 		this.settingsProperty.addListener((observable, oldValue, newValue) -> {
 			if (newValue != null) {
-				this.fontProperty.setValue(Font.font(newValue.getFont()));
+				this.fontProperty.setValue(Font.font(newValue.getFont(), newValue.getFontSize()));
 				this.speedProperty.setValue(newValue.getSpeed());
 			}
 		});
@@ -193,6 +195,15 @@ public class ViewModel {
 				this.readingTimer.setSpeed((int) newValue); 
 			}
 		});
+	}
+	
+	/**
+	 * A property that indicates the size of the font in the application.
+	 * 
+	 * @return the fontSizeProperty.
+	 */
+	public IntegerProperty fontSizeProperty() {
+		return this.fontSizeProperty;
 	}
 	
 	/**

@@ -29,6 +29,7 @@ public class Main extends Application {
 	
 	public static final String APPLICATION_TITLE = "Jericho";
 	public static final int DEFAULT_TEXT_SPEED = 75;
+	public static final int DEFAULT_FONT_SIZE = 13;
 	
 	private ViewModel viewModel;
 	
@@ -77,7 +78,7 @@ public class Main extends Application {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			this.viewModel.settingsProperty().setValue(new Setting(Font.getDefault().getFamily(), DEFAULT_TEXT_SPEED));
+			this.viewModel.settingsProperty().setValue(new Setting(Font.getDefault().getFamily(), DEFAULT_TEXT_SPEED, DEFAULT_FONT_SIZE));
 		}
 	}
 	

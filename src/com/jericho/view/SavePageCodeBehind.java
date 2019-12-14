@@ -11,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 
@@ -22,6 +24,9 @@ import javafx.scene.text.Font;
  */
 public class SavePageCodeBehind extends AbstractViewController {
 
+	private static final int MIN_FONT_SIZE = 8;
+	private static final int MAX_FONT_SIZE = 48;
+	
 	@FXML
 	private AnchorPane pane;
 	
@@ -30,6 +35,9 @@ public class SavePageCodeBehind extends AbstractViewController {
 
     @FXML
     private ComboBox<String> fontComboBox;
+    
+    @FXML
+    private Spinner<Integer> fontSizeSpinner;
 
     @FXML
     private Button saveButton;
@@ -37,6 +45,7 @@ public class SavePageCodeBehind extends AbstractViewController {
     @FXML
     private void initialize() {
     	this.setUpFontComboBox();
+    	this.fontSizeSpinner.setValueFactory(new BoundIntegerValueFactory(MIN_FONT_SIZE, MAX_FONT_SIZE));
     }
     
     @Override
@@ -46,13 +55,15 @@ public class SavePageCodeBehind extends AbstractViewController {
     	SpeedAdjuster adjuster = new SpeedAdjuster(1, 100);
     	this.textSpeedSlider.setValue(adjuster.adjust(this.getViewModel().speedProperty().get()));
     	this.fontComboBox.getSelectionModel().select(this.getViewModel().fontProperty().get().getFamily());
+    	this.fontSizeSpinner.getValueFactory().setValue((int) this.getViewModel().fontProperty().get().getSize());
     }
     
     @FXML
     private void onSaveButtonAction(ActionEvent event) {
     	String selectedFont = this.fontComboBox.getSelectionModel().getSelectedItem();
     	int sliderSpeed = (int) this.textSpeedSlider.getValue();
-    	Setting setting = new Setting(selectedFont, sliderSpeed);
+    	int fontSize = this.fontSizeSpinner.getValue();
+    	Setting setting = new Setting(selectedFont, sliderSpeed, fontSize);
     	
     	this.getViewModel().settingsProperty().setValue(setting);
     	
@@ -64,5 +75,39 @@ public class SavePageCodeBehind extends AbstractViewController {
     	this.fontComboBox.setValue(Font.getDefault().getFamily());
     	this.fontComboBox.getItems().setAll(Font.getFamilies());
     }
+    
+    private class BoundIntegerValueFactory extends SpinnerValueFactory<Integer> {
 
+    	private int lower;
+    	private int upper;
+    	
+    	public BoundIntegerValueFactory(int arg0, int arg1) {
+    		if (arg0 == arg1) {
+    			throw new IllegalArgumentException();
+    		}
+    		
+    		this.lower = arg0 > arg1 ? arg1 : arg0;
+    		this.upper = arg0 > arg1 ? arg0 : arg1;
+    		this.setValue(this.lower);
+    	}
+    	
+		@Override
+		public void decrement(int numberOfDecrements) {
+			for (int i = 0; i < numberOfDecrements; i++) {
+				if (this.getValue() > this.lower) {
+					this.setValue(this.getValue() - 1);
+				}
+			}
+		}
+
+		@Override
+		public void increment(int numberOfIncrements) {
+			for (int i = 0; i < numberOfIncrements; i++) {
+				if (this.getValue() < this.upper) {
+					this.setValue(this.getValue() + 1);
+				}
+			}
+		}
+    	
+    }
 }

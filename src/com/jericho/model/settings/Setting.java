@@ -16,6 +16,7 @@ public class Setting implements Serializable {
 	
 	private String font;
 	private int speed;
+	private int fontSize;
 	
 	/**
 	 * Creates a new settings object.
@@ -23,13 +24,14 @@ public class Setting implements Serializable {
 	 * @param font the system font.
 	 * @param speed the speed that text is displayed when pressing play.
 	 */
-	public Setting(String font, int speed) {
+	public Setting(String font, int speed, int fontSize) {
 		if (font == null) {
 			throw new IllegalArgumentException();
 		}
 		
 		this.font = font;
 		this.speed = speed;
+		this.fontSize = fontSize;
 	}
 	
 	/**
@@ -39,6 +41,15 @@ public class Setting implements Serializable {
 	 */
 	public String getFont() {
 		return this.font;
+	}
+	
+	/**
+	 * Gets this setting's font size.
+	 * 
+	 * @return the font size.
+	 */
+	public int getFontSize() {
+		return this.fontSize;
 	}
 	
 	/**
