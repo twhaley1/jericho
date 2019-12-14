@@ -1,19 +1,13 @@
 package com.jericho.view;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.jericho.model.SpeedAdjuster;
 import com.jericho.model.settings.Setting;
-import com.jericho.model.settings.SettingSaver;
 import com.jericho.view.viewtransitions.PageLoader;
 import com.jericho.viewmodel.AbstractViewController;
 import com.jericho.viewmodel.ViewModel;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
@@ -51,7 +45,6 @@ public class SavePageCodeBehind extends AbstractViewController {
     	
     	SpeedAdjuster adjuster = new SpeedAdjuster(1, 100);
     	this.textSpeedSlider.setValue(adjuster.adjust(this.getViewModel().speedProperty().get()));
-    	
     	this.fontComboBox.getSelectionModel().select(this.getViewModel().fontProperty().get().getFamily());
     }
     
@@ -61,21 +54,7 @@ public class SavePageCodeBehind extends AbstractViewController {
     	int sliderSpeed = (int) this.textSpeedSlider.getValue();
     	Setting setting = new Setting(selectedFont, sliderSpeed);
     	
-    	String path = this.getClass().getResource("../usersettings").getPath();
-    	File saveFile = new File(path + File.separator + "jericho_save.ser");
-    	
-    	try {
-    		saveFile.createNewFile();
-			SettingSaver.save(saveFile, setting);
-		} catch (IOException e) {
-			System.err.println("Could not save settings.");
-			
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("An error occurred.");
-			alert.setHeaderText("Settings could not be saved.");
-			alert.setContentText("Try running the application as administrator and trying again.");
-			alert.showAndWait();
-		}
+    	this.getViewModel().settingsProperty().setValue(setting);
     	
     	PageLoader loader = new PageLoader(this.pane, this.getViewModel());
     	loader.changeToMainPage();

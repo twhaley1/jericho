@@ -2,6 +2,8 @@ package com.jericho.viewmodel;
 
 import java.io.File;
 
+import javax.naming.directory.InvalidAttributesException;
+
 import com.jericho.model.ControlledFrameAction;
 import com.jericho.model.StringExpander;
 import com.jericho.model.TextReader;
@@ -136,7 +138,9 @@ public class ViewModel {
 	public void pauseIncreasingContents() {
 		this.isPlayingProperty.setValue(false);
 		this.isPausedProperty.setValue(true);
-		this.readContents.pause();
+		if (this.readContents != null) {
+			this.readContents.pause();	
+		}
 	}
 	
 	/**
