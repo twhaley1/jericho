@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 /**
@@ -30,6 +31,7 @@ public class Main extends Application {
 	public static final String APPLICATION_TITLE = "Jericho";
 	public static final int DEFAULT_TEXT_SPEED = 75;
 	public static final int DEFAULT_FONT_SIZE = 13;
+	public static final Color DEFAULT_FONT_COLOR = Color.BLACK;
 	
 	private ViewModel viewModel;
 	
@@ -78,7 +80,8 @@ public class Main extends Application {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			this.viewModel.settingsProperty().setValue(new Setting(Font.getDefault().getFamily(), DEFAULT_TEXT_SPEED, DEFAULT_FONT_SIZE));
+			this.viewModel.settingsProperty().setValue(new Setting(Font.getDefault().getFamily(), 
+					DEFAULT_TEXT_SPEED, DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR));
 		}
 	}
 	

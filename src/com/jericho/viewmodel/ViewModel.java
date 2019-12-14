@@ -17,6 +17,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 /**
@@ -31,7 +32,7 @@ public class ViewModel {
 	
 	private ObjectProperty<Setting> settingsProperty;
 	private ObjectProperty<Font> fontProperty;
-	private IntegerProperty fontSizeProperty;
+	private ObjectProperty<Color> fontColorProperty;
 	private IntegerProperty speedProperty;
 	
 	private StringProperty contentsProperty;
@@ -163,7 +164,7 @@ public class ViewModel {
     	this.speedProperty = new SimpleIntegerProperty();
     	this.fontProperty = new SimpleObjectProperty<Font>();
     	this.settingsProperty = new SimpleObjectProperty<Setting>();
-    	this.fontSizeProperty = new SimpleIntegerProperty();
+    	this.fontColorProperty = new SimpleObjectProperty<Color>();
 	}
 	
 	private void setPropertiesForLoading() {
@@ -185,6 +186,7 @@ public class ViewModel {
 			if (newValue != null) {
 				this.fontProperty.setValue(Font.font(newValue.getFont(), newValue.getFontSize()));
 				this.speedProperty.setValue(newValue.getSpeed());
+				this.fontColorProperty.setValue(newValue.getFontColor());
 			}
 		});
 	}
@@ -198,12 +200,12 @@ public class ViewModel {
 	}
 	
 	/**
-	 * A property that indicates the size of the font in the application.
+	 * A property indicating the current color of the text displayed to the user.
 	 * 
-	 * @return the fontSizeProperty.
+	 * @return the fontColorProperty.
 	 */
-	public IntegerProperty fontSizeProperty() {
-		return this.fontSizeProperty;
+	public ObjectProperty<Color> fontColorProperty() {
+		return this.fontColorProperty;
 	}
 	
 	/**

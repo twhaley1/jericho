@@ -9,11 +9,13 @@ import com.jericho.viewmodel.ViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 /**
@@ -38,6 +40,9 @@ public class SavePageCodeBehind extends AbstractViewController {
     
     @FXML
     private Spinner<Integer> fontSizeSpinner;
+    
+    @FXML
+    private ColorPicker fontColorPicker;
 
     @FXML
     private Button saveButton;
@@ -56,6 +61,7 @@ public class SavePageCodeBehind extends AbstractViewController {
     	this.textSpeedSlider.setValue(adjuster.adjust(this.getViewModel().speedProperty().get()));
     	this.fontComboBox.getSelectionModel().select(this.getViewModel().fontProperty().get().getFamily());
     	this.fontSizeSpinner.getValueFactory().setValue((int) this.getViewModel().fontProperty().get().getSize());
+    	this.fontColorPicker.setValue(this.getViewModel().fontColorProperty().get());
     }
     
     @FXML
@@ -63,7 +69,8 @@ public class SavePageCodeBehind extends AbstractViewController {
     	String selectedFont = this.fontComboBox.getSelectionModel().getSelectedItem();
     	int sliderSpeed = (int) this.textSpeedSlider.getValue();
     	int fontSize = this.fontSizeSpinner.getValue();
-    	Setting setting = new Setting(selectedFont, sliderSpeed, fontSize);
+    	Color fontColor = this.fontColorPicker.getValue();
+    	Setting setting = new Setting(selectedFont, sliderSpeed, fontSize, fontColor);
     	
     	this.getViewModel().settingsProperty().setValue(setting);
     	
