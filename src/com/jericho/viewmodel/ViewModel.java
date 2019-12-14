@@ -2,8 +2,6 @@ package com.jericho.viewmodel;
 
 import java.io.File;
 
-import javax.naming.directory.InvalidAttributesException;
-
 import com.jericho.model.ControlledFrameAction;
 import com.jericho.model.StringExpander;
 import com.jericho.model.TextReader;
@@ -72,9 +70,7 @@ public class ViewModel {
 			throw new IllegalArgumentException();
 		}
 		
-		this.clearProperties();
-		this.isLoadingProperty.setValue(true);
-		
+		this.setPropertiesForLoading();
 		this.startLoadingTask(file);
 	}
 	
@@ -115,18 +111,16 @@ public class ViewModel {
 	 * @postcondition isPausedProperty() == false && isPlayingProperty() == true
 	 */
 	public void startPlaying() {
-		if (this.isPausedProperty.not().getValue() && this.isPlayingProperty.not().getValue()) {
-			this.isPlayingProperty.setValue(true);
-			this.contentsProperty.setValue("");
+		if (!this.isPausedProperty.get()) {
 			this.readContents.reset();
-			
 			this.readingTimer = new ControlledFrameAction(this.readContents, this.speedProperty.get());
 			this.readingTimer.start();
-		} else {
-			this.readContents.unPause();
-			this.isPlayingProperty.setValue(true);
-			this.isPausedProperty.setValue(false);
 		}
+		
+		this.isPlayingProperty.setValue(true);
+		this.isPausedProperty.setValue(false);
+		this.readContents.unPause();
+		
 	}
 	
 	/**
@@ -170,9 +164,18 @@ public class ViewModel {
     	this.settingsProperty = new SimpleObjectProperty<Setting>();
 	}
 	
-	private void clearProperties() {
+	private void setPropertiesForLoading() {
 		this.progressProperty.setValue(0);
 		this.contentsProperty.setValue(null);
+		this.isPlayingProperty.setValue(false);
+		this.isPausedProperty.setValue(false);
+		this.isLoadingProperty.setValue(true);
+		this.readContents = null;
+		
+		if (this.readingTimer != null) {
+			this.readingTimer.stop();
+		}
+		this.readingTimer = null;
 	}
 	
 	private void addSettingListener() {

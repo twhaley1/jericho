@@ -28,25 +28,13 @@ import javafx.scene.text.Font;
 public class Main extends Application {
 	
 	public static final String APPLICATION_TITLE = "Jericho";
+	public static final int DEFAULT_TEXT_SPEED = 75;
 	
 	private ViewModel viewModel;
 	
 	public Main() {
 		this.viewModel = new ViewModel();
-		
-		File saveDirectory = new File("usersettings");
-    	if (!saveDirectory.exists()) {
-    		saveDirectory.mkdir();
-    	}
-    	
-    	File saveFile = new File(saveDirectory.getAbsolutePath() + File.separator + "jericho_save.ser");
-    	try {
-			this.viewModel.settingsProperty().setValue(SettingReader.readSetting(saveFile));
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			this.viewModel.settingsProperty().setValue(new Setting(Font.getDefault().getFamily(), 75));
-		}
+		this.loadSettings();
 	}
 	
 	@Override
@@ -73,6 +61,27 @@ public class Main extends Application {
 	public void stop() throws Exception {
 		// TODO: Can add prompt that asks if the user wants to save any new changes to settings.
 
+		this.saveSettings();
+		super.stop();
+	}
+	
+	private void loadSettings() {
+		File saveDirectory = new File("usersettings");
+    	if (!saveDirectory.exists()) {
+    		saveDirectory.mkdir();
+    	}
+    	
+    	File saveFile = new File(saveDirectory.getAbsolutePath() + File.separator + "jericho_save.ser");
+    	try {
+			this.viewModel.settingsProperty().setValue(SettingReader.readSetting(saveFile));
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			this.viewModel.settingsProperty().setValue(new Setting(Font.getDefault().getFamily(), DEFAULT_TEXT_SPEED));
+		}
+	}
+	
+	private void saveSettings() {
 		File saveFile = new File("usersettings" + File.separator + "jericho_save.ser");
     	
     	try {
@@ -87,7 +96,6 @@ public class Main extends Application {
 			alert.setContentText("Try running the application as administrator and trying again.");
 			alert.showAndWait();
 		}
-		super.stop();
 	}
 
 	/**
