@@ -2,6 +2,7 @@ package com.jericho.viewmodel;
 
 import java.io.File;
 
+import com.jericho.model.Content;
 import com.jericho.model.ControlledFrameAction;
 import com.jericho.model.Reader;
 import com.jericho.model.ReaderFactory;

@@ -15,15 +15,14 @@ import javafx.beans.property.StringProperty;
  *
  */
 public class StringExpander implements Commandable {
-
-	private static final int LIMIT = 350;
 	
-	private String content;
+	private Content content;
 	
 	private StringProperty contentProperty;
 	private BooleanProperty isCompleteProperty;
 	
 	private int currentIndex;
+	private int currentLineIndex;
 	private boolean isPaused;
 	
 	/**
@@ -34,16 +33,17 @@ public class StringExpander implements Commandable {
 	 * 
 	 * @param builder the StringBuilder to give to this expander.
 	 */
-	public StringExpander(String content) {
-		if (content == null) {
+	public StringExpander(String data) {
+		if (data == null) {
 			throw new IllegalArgumentException();
 		}
 		
-		this.content = content;
+		this.content = new Content(data);
 		this.contentProperty = new SimpleStringProperty("");
 		this.isCompleteProperty = new SimpleBooleanProperty();
 		
 		this.currentIndex = 0;
+		this.currentLineIndex = 0;
 		this.unPause();
 	}
 
@@ -101,24 +101,31 @@ public class StringExpander implements Commandable {
 	 */
 	public void reset() {
 		this.currentIndex = 0;
+		this.currentLineIndex = 0;
 		this.isCompleteProperty.setValue(this.isComplete());
 	}
 	
 	private void incrementContent() {
 		if (!this.isPaused) {
-			this.currentIndex++;	
+			this.updateContentIndices();
 		}
 		
-		// TODO: Need to do some work here. Maybe try to format the text more once it is uploaded.
-		// TODO: Split it up by newline characters, then can create a map with key = index indicating line number, 
-		// TODO: and value = the length of the line. We could use this to evenly cut out a whole line at a time 
-		// TODO: instead of one character at a time.
-		int lowerBound = this.currentIndex > LIMIT ? this.currentIndex - LIMIT : 0;
-		this.contentProperty.setValue(this.content.substring(lowerBound, this.currentIndex));
+		// TODO: Make max lines a configurable setting.
+		final int maxLines = Integer.MAX_VALUE;
+		this.contentProperty.setValue(this.content.getContentFrom(this.currentLineIndex, this.currentIndex, maxLines));
+	}
+	
+	private void updateContentIndices() {
+		if (this.currentIndex == this.content.getLineAt(this.currentLineIndex).length()) {
+			this.currentLineIndex++;
+			this.currentIndex = 0;
+		} else {
+			this.currentIndex++;	
+		}
 	}
 	
 	private boolean isComplete() {
-		return this.content.length() == this.currentIndex;
+		return (this.currentLineIndex == this.content.getNumberOfLines() - 1) && this.currentIndex == this.content.getLineAt(this.currentLineIndex).length();
 	}
 	
 }
