@@ -22,11 +22,14 @@ public final class PageLoader {
 
 	private static final String SETTINGS_PAGE = ".." + File.separator + "SettingsPage.fxml";
 	private static final String MAIN_PAGE = ".." + File.separator + "MainPage.fxml";
+	private static final String ABOUT_PAGE = ".." + File.separator + "AboutPage.fxml";
 	
 	private static final String CURRENT_PANE_NULL = "currentPane can not be null.";
 	
 	private URL settingsPageUrl;
 	private URL mainPageUrl;
+	private URL aboutPageUrl;
+	
 	private Pane currentPane;
 	private ViewModel viewModel;
 	
@@ -50,6 +53,7 @@ public final class PageLoader {
 		this.currentPane = currentPane;
 		this.settingsPageUrl = this.getClass().getResource(SETTINGS_PAGE);
 		this.mainPageUrl = this.getClass().getResource(MAIN_PAGE);
+		this.aboutPageUrl = this.getClass().getResource(ABOUT_PAGE);
 	}
 	
 	/**
@@ -58,6 +62,14 @@ public final class PageLoader {
 	public void changeToSettingsPage() {
 		try {
 	   		SceneChanger.changeScene(this.settingsPageUrl, this.currentPane, this.viewModel);
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+	
+	public void changeToAboutPage() {
+		try {
+			SceneChanger.changeScene(this.aboutPageUrl, this.currentPane, this.viewModel);
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}

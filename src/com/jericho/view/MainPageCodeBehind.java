@@ -60,6 +60,12 @@ public class MainPageCodeBehind extends AbstractViewController {
     }
     
     @FXML
+    private void onAboutMenuItemAction(ActionEvent event) {
+    	PageLoader loader = new PageLoader(this.pane, this.getViewModel());
+    	loader.changeToAboutPage();
+    }
+    
+    @FXML
     private void onSettingsMenuItemAction(ActionEvent event) {
     	PageLoader loader = new PageLoader(this.pane, this.getViewModel());
     	loader.changeToSettingsPage();
