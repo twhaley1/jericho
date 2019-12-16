@@ -58,6 +58,27 @@ public class Setting implements Serializable {
 		this.backgroundBlue = backgroundColor.getBlue();
 	}
 	
+	@Override
+	public int hashCode() {
+		return (int) (this.font.length() + this.speed + this.fontSize + this.fontRed + this.fontBlue + this.fontGreen + this.backgroundBlue + this.backgroundGreen + this.backgroundRed);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Setting) {
+			Setting other = (Setting) obj;
+			Color otherFontColor = other.getFontColor();
+			Color otherBackgroundColor = other.getBackgroundColor(); 
+			
+			return this.font.equals(other.getFont()) && this.speed == other.getSpeed() && this.fontSize == other.getFontSize() && 
+					this.fontRed == otherFontColor.getRed() && this.fontGreen == otherFontColor.getGreen() && this.fontBlue == otherFontColor.getBlue() &&
+					this.backgroundRed == otherBackgroundColor.getRed() && this.backgroundGreen == otherBackgroundColor.getGreen() &&
+					this.backgroundBlue == otherBackgroundColor.getBlue();
+		} else {
+			return super.equals(obj);
+		}
+	}
+
 	/**
 	 * Gets the setting's font color.
 	 * 

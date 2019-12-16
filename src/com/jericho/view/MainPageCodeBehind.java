@@ -15,7 +15,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 
 /**
  * Code Behind for MainPage.fxml
@@ -70,8 +72,8 @@ public class MainPageCodeBehind extends AbstractViewController {
     
     @FXML
     private void onCloseMenuItemAction(ActionEvent event) {
-    	PageLoader loader = new PageLoader(this.pane, this.getViewModel());
-    	loader.close();
+    	Stage currentStage = (Stage) this.pane.getScene().getWindow();
+    	currentStage.fireEvent(new WindowEvent(currentStage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     @FXML

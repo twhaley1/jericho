@@ -3,11 +3,13 @@ package application;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 import com.jericho.model.settings.Setting;
 import com.jericho.model.settings.SettingReader;
 import com.jericho.model.settings.SettingSaver;
 import com.jericho.view.MainPageCodeBehind;
+import com.jericho.view.SaveDialog;
 import com.jericho.viewmodel.ViewModel;
 
 import javafx.application.Application;
@@ -29,12 +31,13 @@ import javafx.scene.text.Font;
 public class Main extends Application {
 	
 	public static final String APPLICATION_TITLE = "Jericho";
-	public static final int DEFAULT_TEXT_SPEED = 75;
-	public static final int DEFAULT_FONT_SIZE = 13;
+	public static final int DEFAULT_TEXT_SPEED = 85;
+	public static final int DEFAULT_FONT_SIZE = 18;
 	public static final Color DEFAULT_FONT_COLOR = Color.BLACK;
 	public static final Color DEFAULT_BACKGROUND_COLOR = Color.WHITE;
 	
 	private ViewModel viewModel;
+	private Setting startingSettings;
 	
 	public Main() {
 		this.viewModel = new ViewModel();
@@ -60,18 +63,21 @@ public class Main extends Application {
 			
 			primaryStage.setScene(scene);
 			primaryStage.setTitle(APPLICATION_TITLE);
+			primaryStage.setOnCloseRequest(event -> this.promptForSaveDecision());
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	@Override
-	public void stop() throws Exception {
-		// TODO: Can add prompt that asks if the user wants to save any new changes to settings.
-
-		this.saveSettings();
-		super.stop();
+	private void promptForSaveDecision() {
+		if (!this.startingSettings.equals(this.viewModel.settingsProperty().get())) {
+			SaveDialog dialog = new SaveDialog();
+			Optional<Boolean> result = dialog.showAndWait();
+			if (result.isPresent() && result.get()) {
+				this.saveSettings();
+			}
+		}
 	}
 	
 	private void loadSettings() {
@@ -84,11 +90,18 @@ public class Main extends Application {
     	try {
 			this.viewModel.settingsProperty().setValue(SettingReader.readSetting(saveFile));
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			this.viewModel.settingsProperty().setValue(new Setting(Font.getDefault().getFamily(), 
+					DEFAULT_TEXT_SPEED, DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR, DEFAULT_BACKGROUND_COLOR));
 		} catch (IOException e) {
 			this.viewModel.settingsProperty().setValue(new Setting(Font.getDefault().getFamily(), 
 					DEFAULT_TEXT_SPEED, DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR, DEFAULT_BACKGROUND_COLOR));
 		}
+    	
+    	this.startingSettings = new Setting(this.viewModel.settingsProperty().get().getFont(),
+    			this.viewModel.settingsProperty().get().getSpeed(),
+    			this.viewModel.settingsProperty().get().getFontSize(),
+    			this.viewModel.settingsProperty().get().getFontColor(),
+    			this.viewModel.settingsProperty().get().getBackgroundColor());
 	}
 	
 	private void saveSettings() {
