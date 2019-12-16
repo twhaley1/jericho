@@ -14,9 +14,7 @@ public class TestExecute {
 	
 	@BeforeEach
 	public void setUp() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("yes");
-		this.expander = new StringExpander(sb);
+		this.expander = new StringExpander("yes");
 	}
 	
 	@AfterEach

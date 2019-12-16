@@ -16,7 +16,7 @@ import javafx.concurrent.Task;
  * @author thomaswhaley
  *
  */
-public class TextReader extends Task<StringBuilder> {
+public class TextReader extends Task<String> {
 
 	private File file;
 	private DoubleProperty progress;
@@ -42,7 +42,7 @@ public class TextReader extends Task<StringBuilder> {
 	}
 
 	@Override
-	protected StringBuilder call() throws Exception {
+	protected String call() throws Exception {
 		return this.getFileContents();
 	}
 	
@@ -56,7 +56,7 @@ public class TextReader extends Task<StringBuilder> {
 	 * @return a StringBuilder that contains the contents of the file.
 	 * @throws IOException if an error occurs loading the file.
 	 */
-	private StringBuilder getFileContents() throws IOException {
+	private String getFileContents() throws IOException {
 		StringBuilder sb = new StringBuilder();
 		
 		byte[] contents = Files.readAllBytes(this.file.toPath());
@@ -71,7 +71,7 @@ public class TextReader extends Task<StringBuilder> {
 			this.progress.setValue(accumulatedBytes / numberOfBytes);
 		}
 		
-		return sb;
+		return sb.toString();
 	}
 	
 	/**

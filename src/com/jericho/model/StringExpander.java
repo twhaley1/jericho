@@ -16,7 +16,7 @@ import javafx.beans.property.StringProperty;
  */
 public class StringExpander implements Commandable {
 
-	private StringBuilder builder;
+	private String content;
 	
 	private StringProperty contentProperty;
 	private BooleanProperty isCompleteProperty;
@@ -32,13 +32,13 @@ public class StringExpander implements Commandable {
 	 * 
 	 * @param builder the StringBuilder to give to this expander.
 	 */
-	public StringExpander(StringBuilder builder) {
-		if (builder == null) {
+	public StringExpander(String content) {
+		if (content == null) {
 			throw new IllegalArgumentException();
 		}
 		
-		this.builder = builder;
-		this.contentProperty = new SimpleStringProperty();
+		this.content = content;
+		this.contentProperty = new SimpleStringProperty("");
 		this.isCompleteProperty = new SimpleBooleanProperty();
 		
 		this.currentIndex = 0;
@@ -107,11 +107,11 @@ public class StringExpander implements Commandable {
 			this.currentIndex++;	
 		}
 		
-		this.contentProperty.setValue(this.builder.substring(0, this.currentIndex));
+		this.contentProperty.setValue(this.content.substring(0, this.currentIndex));
 	}
 	
 	private boolean isComplete() {
-		return this.builder.length() == this.currentIndex;
+		return this.content.length() == this.currentIndex;
 	}
 	
 }

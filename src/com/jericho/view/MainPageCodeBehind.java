@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
@@ -49,8 +50,14 @@ public class MainPageCodeBehind extends AbstractViewController {
     private ProgressBar loadingProgressBar;
     
     @FXML
+    private MenuBar menuBar;
+    
+    @FXML
     private void initialize() {
     	this.setComponentBindings();
+    	final String os = System.getProperty("os.name");
+    	if (os != null && os.startsWith("Mac"))
+    	  menuBar.useSystemMenuBarProperty().set(true);
     }
     
     @Override

@@ -14,9 +14,7 @@ public class TestReset {
 	
 	@BeforeEach
 	public void setUp() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("hello");
-		this.expander = new StringExpander(sb);
+		this.expander = new StringExpander("hello");
 	}
 	
 	@AfterEach
@@ -33,9 +31,7 @@ public class TestReset {
 
 	@Test
 	public void testResetsWithEmptyStringBuilder() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("");
-		this.expander = new StringExpander(sb);
+		this.expander = new StringExpander("");
 		this.expander.reset();
 		
 		assertEquals(true, this.expander.isCompleteProperty().get());

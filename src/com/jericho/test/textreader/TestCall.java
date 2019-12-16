@@ -3,7 +3,6 @@ package com.jericho.test.textreader;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +16,7 @@ public class TestCall {
 			super(file);
 		}
 		
-		public StringBuilder getContents() throws Exception {
+		public String getContents() throws Exception {
 			return super.call();
 		}
 	}

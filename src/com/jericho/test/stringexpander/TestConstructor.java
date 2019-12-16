@@ -15,9 +15,7 @@ public class TestConstructor {
 
 	@Test
 	public void testValidConstruction() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("yes");
-		StringExpander expander = new StringExpander(sb);
+		StringExpander expander = new StringExpander("yes");
 		
 		assertAll(() -> assertEquals(false, expander.isCompleteProperty().get()),
 				() -> assertEquals(null, expander.contentProperty().get()));
