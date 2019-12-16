@@ -69,6 +69,19 @@
                         </Label>
                         <ColorPicker fx:id="fontColorPicker" HBox.hgrow="ALWAYS" />
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="126.0">
+                     <children>
+                        <Label text="Background Color:">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ColorPicker fx:id="backgroundColorPicker" HBox.hgrow="ALWAYS" />
+                     </children>
                   </HBox>
                </children>
             </VBox>

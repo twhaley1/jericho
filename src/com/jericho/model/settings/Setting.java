@@ -20,9 +20,13 @@ public class Setting implements Serializable {
 	private int speed;
 	private int fontSize;
 	
-	private double red;
-	private double green;
-	private double blue;
+	private double fontRed;
+	private double fontGreen;
+	private double fontBlue;
+	
+	private double backgroundRed;
+	private double backgroundGreen;
+	private double backgroundBlue;
 	
 	/**
 	 * Creates a new settings object.
@@ -30,11 +34,14 @@ public class Setting implements Serializable {
 	 * @param font the system font.
 	 * @param speed the speed that text is displayed when pressing play.
 	 */
-	public Setting(String font, int speed, int fontSize, Color fontColor) {
+	public Setting(String font, int speed, int fontSize, Color fontColor, Color backgroundColor) {
 		if (font == null) {
 			throw new IllegalArgumentException();
 		}
 		if (fontColor == null) {
+			throw new IllegalArgumentException();
+		}
+		if (backgroundColor == null) {
 			throw new IllegalArgumentException();
 		}
 		
@@ -42,15 +49,36 @@ public class Setting implements Serializable {
 		this.speed = speed;
 		this.fontSize = fontSize;
 		
-		this.red = fontColor.getRed();
-		this.green = fontColor.getGreen();
-		this.blue = fontColor.getBlue();
+		this.fontRed = fontColor.getRed();
+		this.fontGreen = fontColor.getGreen();
+		this.fontBlue = fontColor.getBlue();
+		
+		this.backgroundRed = backgroundColor.getRed();
+		this.backgroundGreen = backgroundColor.getGreen();
+		this.backgroundBlue = backgroundColor.getBlue();
 	}
 	
+	/**
+	 * Gets the setting's font color.
+	 * 
+	 * @return the font color.
+	 */
 	public Color getFontColor() {
-		int normalizedRed = (int) (this.red * 255);
-		int normalizedGreen = (int) (this.green * 255);
-		int normalizedBlue = (int) (this.blue * 255);
+		int normalizedRed = (int) (this.fontRed * 255);
+		int normalizedGreen = (int) (this.fontGreen * 255);
+		int normalizedBlue = (int) (this.fontBlue * 255);
+		return Color.rgb(normalizedRed, normalizedGreen, normalizedBlue);
+	}
+	
+	/**
+	 * Gets the setting's background color.
+	 * 
+	 * @return the background color.
+	 */
+	public Color getBackgroundColor() {
+		int normalizedRed = (int) (this.backgroundRed * 255);
+		int normalizedGreen = (int) (this.backgroundGreen * 255);
+		int normalizedBlue = (int) (this.backgroundBlue * 255);
 		return Color.rgb(normalizedRed, normalizedGreen, normalizedBlue);
 	}
 	

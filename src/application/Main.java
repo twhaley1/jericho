@@ -32,6 +32,7 @@ public class Main extends Application {
 	public static final int DEFAULT_TEXT_SPEED = 75;
 	public static final int DEFAULT_FONT_SIZE = 13;
 	public static final Color DEFAULT_FONT_COLOR = Color.BLACK;
+	public static final Color DEFAULT_BACKGROUND_COLOR = Color.WHITE;
 	
 	private ViewModel viewModel;
 	
@@ -81,7 +82,7 @@ public class Main extends Application {
 			e.printStackTrace();
 		} catch (IOException e) {
 			this.viewModel.settingsProperty().setValue(new Setting(Font.getDefault().getFamily(), 
-					DEFAULT_TEXT_SPEED, DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR));
+					DEFAULT_TEXT_SPEED, DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR, DEFAULT_BACKGROUND_COLOR));
 		}
 	}
 	

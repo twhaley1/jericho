@@ -109,6 +109,7 @@ public class MainPageCodeBehind extends AbstractViewController {
     	this.clearMenuItem.disableProperty().bind(this.getViewModel().contentsProperty().isNull());
     	this.textLabel.fontProperty().bind(this.getViewModel().fontProperty());
     	this.textLabel.textFillProperty().bind(this.getViewModel().fontColorProperty());
+    	this.textScrollPane.backgroundProperty().bind(this.getViewModel().backgroundProperty());
     }
     
     private void setComponentBindings() {

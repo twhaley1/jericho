@@ -43,6 +43,9 @@ public class SavePageCodeBehind extends AbstractViewController {
     
     @FXML
     private ColorPicker fontColorPicker;
+    
+    @FXML
+    private ColorPicker backgroundColorPicker;
 
     @FXML
     private Button saveButton;
@@ -62,6 +65,9 @@ public class SavePageCodeBehind extends AbstractViewController {
     	this.fontComboBox.getSelectionModel().select(this.getViewModel().fontProperty().get().getFamily());
     	this.fontSizeSpinner.getValueFactory().setValue((int) this.getViewModel().fontProperty().get().getSize());
     	this.fontColorPicker.setValue(this.getViewModel().fontColorProperty().get());
+    	
+    	Color currentBackgroundColor = (Color) this.getViewModel().backgroundProperty().get().getFills().get(0).getFill();
+    	this.backgroundColorPicker.setValue(currentBackgroundColor);
     }
     
     @FXML
@@ -70,7 +76,8 @@ public class SavePageCodeBehind extends AbstractViewController {
     	int sliderSpeed = (int) this.textSpeedSlider.getValue();
     	int fontSize = this.fontSizeSpinner.getValue();
     	Color fontColor = this.fontColorPicker.getValue();
-    	Setting setting = new Setting(selectedFont, sliderSpeed, fontSize, fontColor);
+    	Color backgroundColor = this.backgroundColorPicker.getValue();
+    	Setting setting = new Setting(selectedFont, sliderSpeed, fontSize, fontColor, backgroundColor);
     	
     	this.getViewModel().settingsProperty().setValue(setting);
     	

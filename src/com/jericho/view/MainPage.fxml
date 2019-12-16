@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jericho.view.MainPageCodeBehind">
+<BorderPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jericho.view.MainPageCodeBehind">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -37,10 +37,7 @@
       </MenuBar>
    </top>
    <center>
-      <ScrollPane fx:id="textScrollPane" fitToWidth="true" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
+      <ScrollPane id="contentScrollPane" fx:id="textScrollPane" fitToWidth="true" stylesheets="@MainPage.css" BorderPane.alignment="CENTER">
          <content>
             <Label fx:id="textLabel" alignment="TOP_LEFT" wrapText="true">
                <padding>
@@ -48,6 +45,9 @@
                </padding>
             </Label>
          </content>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
       </ScrollPane>
    </center>
    <bottom>

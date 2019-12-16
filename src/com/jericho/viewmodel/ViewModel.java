@@ -17,6 +17,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -33,6 +37,7 @@ public class ViewModel {
 	private ObjectProperty<Setting> settingsProperty;
 	private ObjectProperty<Font> fontProperty;
 	private ObjectProperty<Color> fontColorProperty;
+	private ObjectProperty<Background> backgroundProperty;
 	private IntegerProperty speedProperty;
 	
 	private StringProperty contentsProperty;
@@ -165,6 +170,7 @@ public class ViewModel {
     	this.fontProperty = new SimpleObjectProperty<Font>();
     	this.settingsProperty = new SimpleObjectProperty<Setting>();
     	this.fontColorProperty = new SimpleObjectProperty<Color>();
+    	this.backgroundProperty = new SimpleObjectProperty<Background>();
 	}
 	
 	private void setPropertiesForLoading() {
@@ -187,6 +193,8 @@ public class ViewModel {
 				this.fontProperty.setValue(Font.font(newValue.getFont(), newValue.getFontSize()));
 				this.speedProperty.setValue(newValue.getSpeed());
 				this.fontColorProperty.setValue(newValue.getFontColor());
+				this.backgroundProperty.setValue(new Background(
+						new BackgroundFill(newValue.getBackgroundColor(), CornerRadii.EMPTY, Insets.EMPTY)));
 			}
 		});
 	}
@@ -197,6 +205,15 @@ public class ViewModel {
 				this.readingTimer.setSpeed((int) newValue); 
 			}
 		});
+	}
+	
+	/**
+	 * A property indicating the background for the text displayed to the user.
+	 * 
+	 * @return the backgroundProperty.
+	 */
+	public ObjectProperty<Background> backgroundProperty() {
+		return this.backgroundProperty;
 	}
 	
 	/**
