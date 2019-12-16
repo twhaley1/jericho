@@ -9,11 +9,13 @@ import javafx.stage.Window;
  * @author thomaswhaley
  *
  */
-public class UserTextFileSelection extends FileSelection {
+public class JerichoFileSelection extends FileSelection {
 
-	private static final String TEXT_FILE_TITLE = "Select Text File";
+	private static final String TEXT_FILE_TITLE = "Select Reading File";
 	private static final String TEXT_FILE_SUMMARY = "Text Files";
 	private static final String TEXT_FILE_EXTENSIONS = "*.txt";
+	private static final String PDF_FILE_SUMMARY = "PDF Files";
+	private static final String PDF_FILE_EXTENSIONS = "*.pdf";
 	
 	/**
 	 * Creates a new UserTextFileSelection.
@@ -22,8 +24,10 @@ public class UserTextFileSelection extends FileSelection {
 	 * 
 	 * @param ownerWindow the owner window of the file chooser.
 	 */
-	public UserTextFileSelection(Window ownerWindow) {
-		super(ownerWindow, TEXT_FILE_TITLE, new ExtensionFilter(TEXT_FILE_SUMMARY, TEXT_FILE_EXTENSIONS));
+	public JerichoFileSelection(Window ownerWindow) {
+		super(ownerWindow, TEXT_FILE_TITLE, 
+				new ExtensionFilter(TEXT_FILE_SUMMARY, TEXT_FILE_EXTENSIONS),
+				new ExtensionFilter(PDF_FILE_SUMMARY, PDF_FILE_EXTENSIONS));
 	}
 
 }

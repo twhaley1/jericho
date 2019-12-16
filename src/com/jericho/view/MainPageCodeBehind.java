@@ -2,7 +2,7 @@ package com.jericho.view;
 
 import java.io.File;
 
-import com.jericho.view.fileselection.UserTextFileSelection;
+import com.jericho.view.fileselection.JerichoFileSelection;
 import com.jericho.view.viewtransitions.PageLoader;
 import com.jericho.viewmodel.AbstractViewController;
 import com.jericho.viewmodel.ViewModel;
@@ -55,9 +55,11 @@ public class MainPageCodeBehind extends AbstractViewController {
     @FXML
     private void initialize() {
     	this.setComponentBindings();
+    	
     	final String os = System.getProperty("os.name");
-    	if (os != null && os.startsWith("Mac"))
-    	  menuBar.useSystemMenuBarProperty().set(true);
+    	if (os != null && os.startsWith("Mac")) {
+    		menuBar.useSystemMenuBarProperty().set(true);	
+    	}
     }
     
     @Override
@@ -92,7 +94,7 @@ public class MainPageCodeBehind extends AbstractViewController {
     @FXML
     private void onOpenMenuItemAction(ActionEvent event) {
     	Window currentWindow = this.pane.getScene().getWindow();
-    	UserTextFileSelection selector = new UserTextFileSelection(currentWindow);
+    	JerichoFileSelection selector = new JerichoFileSelection(currentWindow);
     	File selectedFile = selector.selectFile();
     	
     	if (selectedFile != null) {	

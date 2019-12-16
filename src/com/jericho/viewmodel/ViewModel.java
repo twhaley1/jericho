@@ -3,8 +3,9 @@ package com.jericho.viewmodel;
 import java.io.File;
 
 import com.jericho.model.ControlledFrameAction;
+import com.jericho.model.Reader;
+import com.jericho.model.ReaderFactory;
 import com.jericho.model.StringExpander;
-import com.jericho.model.TextReader;
 import com.jericho.model.settings.Setting;
 
 import javafx.beans.property.BooleanProperty;
@@ -82,7 +83,7 @@ public class ViewModel {
 	}
 	
 	private void startLoadingTask(File file) {
-		TextReader task = new TextReader(file);
+		Reader task = ReaderFactory.createReader(file);
 		task.getLoadingProgress().addListener((observable, oldValue, newValue) -> {
 			this.progressProperty.setValue(newValue);
 		});
