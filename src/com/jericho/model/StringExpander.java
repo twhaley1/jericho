@@ -16,6 +16,8 @@ import javafx.beans.property.StringProperty;
  */
 public class StringExpander implements Commandable {
 
+	private static final int LIMIT = 350;
+	
 	private String content;
 	
 	private StringProperty contentProperty;
@@ -107,7 +109,12 @@ public class StringExpander implements Commandable {
 			this.currentIndex++;	
 		}
 		
-		this.contentProperty.setValue(this.content.substring(0, this.currentIndex));
+		// TODO: Need to do some work here. Maybe try to format the text more once it is uploaded.
+		// TODO: Split it up by newline characters, then can create a map with key = index indicating line number, 
+		// TODO: and value = the length of the line. We could use this to evenly cut out a whole line at a time 
+		// TODO: instead of one character at a time.
+		int lowerBound = this.currentIndex > LIMIT ? this.currentIndex - LIMIT : 0;
+		this.contentProperty.setValue(this.content.substring(lowerBound, this.currentIndex));
 	}
 	
 	private boolean isComplete() {
