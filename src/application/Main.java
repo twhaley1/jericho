@@ -53,6 +53,11 @@ public class Main extends Application {
 			controller.setViewModel(this.viewModel);
 			
 			Scene scene = new Scene(root);
+			File cssFile = new File("src" + File.separator + "com" + File.separator + "jericho" + File.separator + "view" + File.separator + "MainPage.css");
+			
+			String stylesheet = cssFile.toURI().toURL().toString();
+			scene.getStylesheets().add(stylesheet);
+			
 			primaryStage.setScene(scene);
 			primaryStage.setTitle(APPLICATION_TITLE);
 			primaryStage.show();

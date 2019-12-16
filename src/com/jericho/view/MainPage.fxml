@@ -37,7 +37,7 @@
       </MenuBar>
    </top>
    <center>
-      <ScrollPane id="contentScrollPane" fx:id="textScrollPane" fitToWidth="true" stylesheets="@MainPage.css" BorderPane.alignment="CENTER">
+      <ScrollPane id="contentScrollPane" fx:id="textScrollPane" fitToWidth="true" BorderPane.alignment="CENTER">
          <content>
             <Label fx:id="textLabel" alignment="TOP_LEFT" wrapText="true">
                <padding>

@@ -8,6 +8,7 @@ import com.jericho.viewmodel.AbstractViewController;
 import com.jericho.viewmodel.ViewModel;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -67,7 +68,11 @@ public final class PageLoader {
 	 */
 	public void changeToMainPage() {
 		try {
-			SceneChanger.changeScene(this.mainPageUrl, this.currentPane, this.viewModel);
+			Scene scene = SceneChanger.changeScene(this.mainPageUrl, this.currentPane, this.viewModel);
+			File cssFile = new File("src" + File.separator + "com" + File.separator + "jericho" + File.separator + "view" + File.separator + "MainPage.css");
+			
+			String stylesheet = cssFile.toURI().toURL().toString();
+			scene.getStylesheets().add(stylesheet);
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
@@ -90,7 +95,7 @@ public final class PageLoader {
 		 * @param currentPane the current pane.
 		 * @throws IOException if an error occurs during loading.
 		 */
-		public static void changeScene(URL fxml, Pane currentPane, ViewModel viewModel) throws IOException {
+		public static Scene changeScene(URL fxml, Pane currentPane, ViewModel viewModel) throws IOException {
 	    	FXMLLoader loader = new FXMLLoader();
 	    	loader.setLocation(fxml);
 	    	Pane loadingPane = loader.load();
@@ -99,6 +104,8 @@ public final class PageLoader {
 	    	
 	   		Stage currentStage = (Stage) currentPane.getScene().getWindow();
 	   		currentStage.getScene().setRoot(loadingPane);
+	   		
+	   		return currentStage.getScene();
 		}
 		
 		
