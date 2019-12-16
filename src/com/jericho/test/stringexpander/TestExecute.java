@@ -87,10 +87,8 @@ public class TestExecute {
 		String beforeReset = this.expander.contentProperty().get();
 		
 		this.expander.dispose();
-		this.expander.execute();
 		
 		assertAll(() -> assertEquals("yes", beforeReset),
-				() -> assertEquals("y", this.expander.contentProperty().get()),
 				() -> assertEquals(true, this.expander.isCompleteProperty().get()));
 	}
 	

@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -47,15 +46,6 @@ public class SavePageCodeBehind extends AbstractViewController {
     
     @FXML
     private ColorPicker backgroundColorPicker;
-
-    @FXML
-    private RadioButton oneLineRadioButton;
-
-    @FXML
-    private RadioButton fitViewRadioButton;
-
-    @FXML
-    private RadioButton scrollContentsRadioButton;
     
     @FXML
     private Button saveButton;

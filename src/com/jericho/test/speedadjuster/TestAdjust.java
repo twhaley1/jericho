@@ -8,6 +8,17 @@ import com.jericho.model.SpeedAdjuster;
 
 public class TestAdjust {
 
+	@Test
+	public void testNotAllowGreaterSpeed() {
+		SpeedAdjuster adjuster = new SpeedAdjuster(1, 100);
+		assertThrows(IllegalArgumentException.class, () -> adjuster.adjust(101));
+	}
+	
+	@Test
+	public void testNotAllowSmallerSpeed() {
+		SpeedAdjuster adjuster = new SpeedAdjuster(1, 100);
+		assertThrows(IllegalArgumentException.class, () -> adjuster.adjust(0));
+	}
 	
 	@Test
 	public void testAtBoundaries() {
