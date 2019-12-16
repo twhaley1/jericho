@@ -104,7 +104,6 @@ public class ViewModel {
 			if (newValue) {
 				this.isPlayingProperty.setValue(false);
 				this.isPausedProperty.setValue(true);
-				this.readContents.reset();
 				this.readContents.pause();
 			}
 		});
@@ -118,7 +117,7 @@ public class ViewModel {
 	 * @postcondition isPausedProperty() == false && isPlayingProperty() == true
 	 */
 	public void startPlaying() {
-		if (!this.isPausedProperty.get()) {
+		if (!this.isPausedProperty.get() || this.readContents.isCompleteProperty().get()) {
 			this.readContents.reset();
 			this.readingTimer = new ControlledFrameAction(this.readContents, this.speedProperty.get());
 			this.readingTimer.start();
@@ -127,7 +126,6 @@ public class ViewModel {
 		this.isPlayingProperty.setValue(true);
 		this.isPausedProperty.setValue(false);
 		this.readContents.unPause();
-		
 	}
 	
 	/**

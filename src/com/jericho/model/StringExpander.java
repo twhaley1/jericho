@@ -57,8 +57,7 @@ public class StringExpander implements Commandable {
 
 	@Override
 	public void dispose() {
-		this.isCompleteProperty.setValue(true);
-		this.reset();
+		this.isCompleteProperty.setValue(this.isComplete());
 	}
 	
 	/**
@@ -100,6 +99,7 @@ public class StringExpander implements Commandable {
 	 */
 	public void reset() {
 		this.currentIndex = 0;
+		this.isCompleteProperty.setValue(this.isComplete());
 	}
 	
 	private void incrementContent() {
