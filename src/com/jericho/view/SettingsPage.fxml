@@ -5,9 +5,11 @@
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -82,6 +84,35 @@
                         </Label>
                         <ColorPicker fx:id="backgroundColorPicker" HBox.hgrow="ALWAYS" />
                      </children>
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="168.0">
+                     <children>
+                        <Label text="Text Display:">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <RadioButton fx:id="oneLineRadioButton" mnemonicParsing="false" text="One Line">
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="textDisplay" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="fitViewRadioButton" mnemonicParsing="false" text="Fit to View" toggleGroup="$textDisplay">
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                        </RadioButton>
+                        <RadioButton fx:id="scrollContentsRadioButton" mnemonicParsing="false" text="Scroll Contents" toggleGroup="$textDisplay" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="15.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>

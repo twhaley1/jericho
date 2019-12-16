@@ -54,7 +54,6 @@ public class MainPageCodeBehind extends AbstractViewController {
     @Override
     public void setViewModel(ViewModel viewModel) {
     	super.setViewModel(viewModel);
-    	
     	this.setViewModelBindings();
     }
     
