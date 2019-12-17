@@ -47,6 +47,8 @@ public class ViewModel {
     private BooleanProperty isPlayingProperty;
     private BooleanProperty isPausedProperty;
 	
+    private IntegerProperty numberOfLinesProperty;
+    
 	private StringExpander readContents;
 	private ControlledFrameAction readingTimer;
 	
@@ -58,6 +60,7 @@ public class ViewModel {
 		this.initializeProperties();
 		this.addSettingListener();
 		this.addSpeedListener();
+		this.addNumberOfLinesListener();
 	}
 	
 	/**
@@ -89,6 +92,7 @@ public class ViewModel {
 		});
 		task.setOnSucceeded(event -> {
 			this.readContents = new StringExpander(task.getValue());
+			this.readContents.setMaximumLines(this.numberOfLinesProperty.get());
 			this.contentsProperty.setValue("");
 			this.isLoadingProperty.setValue(false);
 			this.addListenersForReadContents();
@@ -170,6 +174,7 @@ public class ViewModel {
     	this.settingsProperty = new SimpleObjectProperty<Setting>();
     	this.fontColorProperty = new SimpleObjectProperty<Color>();
     	this.backgroundProperty = new SimpleObjectProperty<Background>();
+    	this.numberOfLinesProperty = new SimpleIntegerProperty();
 	}
 	
 	private void setPropertiesForLoading() {
@@ -194,6 +199,15 @@ public class ViewModel {
 				this.fontColorProperty.setValue(newValue.getFontColor());
 				this.backgroundProperty.setValue(new Background(
 						new BackgroundFill(newValue.getBackgroundColor(), CornerRadii.EMPTY, Insets.EMPTY)));
+				this.numberOfLinesProperty.setValue(newValue.getNumberOfLines());
+			}
+		});
+	}
+	
+	private void addNumberOfLinesListener() {
+		this.numberOfLinesProperty.addListener((observable, oldValue, newValue) -> {
+			if (this.readContents != null) {
+				this.readContents.setMaximumLines(newValue.intValue());
 			}
 		});
 	}
@@ -204,6 +218,15 @@ public class ViewModel {
 				this.readingTimer.setSpeed((int) newValue); 
 			}
 		});
+	}
+	
+	/**
+	 * A property indicating the number of lines that are displayed to the user.
+	 * 
+	 * @return the numberOfLinesProperty.
+	 */
+	public IntegerProperty numberOfLinesProperty() {
+		return this.numberOfLinesProperty;
 	}
 	
 	/**

@@ -19,6 +19,7 @@ public class Setting implements Serializable {
 	private String font;
 	private int speed;
 	private int fontSize;
+	private int numberOfLines;
 	
 	private double fontRed;
 	private double fontGreen;
@@ -34,7 +35,7 @@ public class Setting implements Serializable {
 	 * @param font the system font.
 	 * @param speed the speed that text is displayed when pressing play.
 	 */
-	public Setting(String font, int speed, int fontSize, Color fontColor, Color backgroundColor) {
+	public Setting(String font, int speed, int fontSize, Color fontColor, Color backgroundColor, int numberOfLines) {
 		if (font == null) {
 			throw new IllegalArgumentException();
 		}
@@ -48,6 +49,7 @@ public class Setting implements Serializable {
 		this.font = font;
 		this.speed = speed;
 		this.fontSize = fontSize;
+		this.numberOfLines = numberOfLines;
 		
 		this.fontRed = fontColor.getRed();
 		this.fontGreen = fontColor.getGreen();
@@ -60,7 +62,8 @@ public class Setting implements Serializable {
 	
 	@Override
 	public int hashCode() {
-		return (int) (this.font.length() + this.speed + this.fontSize + this.fontRed + this.fontBlue + this.fontGreen + this.backgroundBlue + this.backgroundGreen + this.backgroundRed);
+		return (int) (this.font.length() + this.speed + this.fontSize + this.fontRed + this.fontBlue + this.fontGreen 
+				+ this.backgroundBlue + this.backgroundGreen + this.backgroundRed + this.numberOfLines);
 	}
 
 	@Override
@@ -73,12 +76,21 @@ public class Setting implements Serializable {
 			return this.font.equals(other.getFont()) && this.speed == other.getSpeed() && this.fontSize == other.getFontSize() && 
 					this.fontRed == otherFontColor.getRed() && this.fontGreen == otherFontColor.getGreen() && this.fontBlue == otherFontColor.getBlue() &&
 					this.backgroundRed == otherBackgroundColor.getRed() && this.backgroundGreen == otherBackgroundColor.getGreen() &&
-					this.backgroundBlue == otherBackgroundColor.getBlue();
+					this.backgroundBlue == otherBackgroundColor.getBlue() && this.numberOfLines == other.getNumberOfLines();
 		} else {
 			return super.equals(obj);
 		}
 	}
 
+	/**
+	 * Gets the number of lines to be displayed to the user.
+	 * 
+	 * @return the number of lines.
+	 */
+	public int getNumberOfLines() {
+		return this.numberOfLines;
+	}
+	
 	/**
 	 * Gets the setting's font color.
 	 * 

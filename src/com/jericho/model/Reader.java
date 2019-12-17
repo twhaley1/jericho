@@ -7,6 +7,12 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.concurrent.Task;
 
+/**
+ * Reads text from a file on another thread.
+ * 
+ * @author thomaswhaley
+ *
+ */
 public abstract class Reader extends Task<String> {
 
 	private File file;

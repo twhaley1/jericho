@@ -34,7 +34,7 @@ public class StringExpander implements Commandable {
 	 * 
 	 * @param builder the StringBuilder to give to this expander.
 	 */
-	public StringExpander(String data, int maxLines) {
+	public StringExpander(String data) {
 		if (data == null) {
 			throw new IllegalArgumentException();
 		}
@@ -45,7 +45,7 @@ public class StringExpander implements Commandable {
 		
 		this.currentIndex = 0;
 		this.currentLineIndex = 0;
-		this.maxLines = maxLines;
+		this.maxLines = Integer.MAX_VALUE;
 		this.unPause();
 	}
 
@@ -62,6 +62,21 @@ public class StringExpander implements Commandable {
 	@Override
 	public void dispose() {
 		this.isCompleteProperty.setValue(this.isComplete());
+	}
+	
+	/**
+	 * Sets the maxLines displayed.
+	 * 
+	 * @precondition maximumLines > 0
+	 * 
+	 * @param maximumLines the maximum number of lines to display.
+	 */
+	public void setMaximumLines(int maximumLines) {
+		if (maximumLines <= 0) {
+			throw new IllegalArgumentException();
+		}
+		
+		this.maxLines = maximumLines;
 	}
 	
 	/**

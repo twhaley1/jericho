@@ -35,6 +35,7 @@ public class Main extends Application {
 	public static final int DEFAULT_FONT_SIZE = 18;
 	public static final Color DEFAULT_FONT_COLOR = Color.BLACK;
 	public static final Color DEFAULT_BACKGROUND_COLOR = Color.WHITE;
+	public static final int DEFAULT_NUMBER_OF_LINES = Integer.MAX_VALUE;
 	
 	private ViewModel viewModel;
 	private Setting startingSettings;
@@ -91,17 +92,18 @@ public class Main extends Application {
 			this.viewModel.settingsProperty().setValue(SettingReader.readSetting(saveFile));
 		} catch (ClassNotFoundException e) {
 			this.viewModel.settingsProperty().setValue(new Setting(Font.getDefault().getFamily(), 
-					DEFAULT_TEXT_SPEED, DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR, DEFAULT_BACKGROUND_COLOR));
+					DEFAULT_TEXT_SPEED, DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR, DEFAULT_BACKGROUND_COLOR, DEFAULT_NUMBER_OF_LINES));
 		} catch (IOException e) {
 			this.viewModel.settingsProperty().setValue(new Setting(Font.getDefault().getFamily(), 
-					DEFAULT_TEXT_SPEED, DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR, DEFAULT_BACKGROUND_COLOR));
+					DEFAULT_TEXT_SPEED, DEFAULT_FONT_SIZE, DEFAULT_FONT_COLOR, DEFAULT_BACKGROUND_COLOR, DEFAULT_NUMBER_OF_LINES));
 		}
     	
     	this.startingSettings = new Setting(this.viewModel.settingsProperty().get().getFont(),
     			this.viewModel.settingsProperty().get().getSpeed(),
     			this.viewModel.settingsProperty().get().getFontSize(),
     			this.viewModel.settingsProperty().get().getFontColor(),
-    			this.viewModel.settingsProperty().get().getBackgroundColor());
+    			this.viewModel.settingsProperty().get().getBackgroundColor(),
+    			this.viewModel.settingsProperty().get().getNumberOfLines());
 	}
 	
 	private void saveSettings() {

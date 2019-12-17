@@ -11,10 +11,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -48,12 +50,26 @@ public class SavePageCodeBehind extends AbstractViewController {
     private ColorPicker backgroundColorPicker;
     
     @FXML
+    private RadioButton unlimitedRadioButton;
+    
+    @FXML
+    private RadioButton limitedRadioButton;
+    
+    @FXML
+    private Spinner<Integer> numberOfLinesSpinner;
+    
+    @FXML
+    private HBox limitedHBox;
+    
+    @FXML
     private Button saveButton;
 
     @FXML
     private void initialize() {
     	this.setUpFontComboBox();
     	this.fontSizeSpinner.setValueFactory(new BoundIntegerValueFactory(MIN_FONT_SIZE, MAX_FONT_SIZE));
+    	this.numberOfLinesSpinner.setValueFactory(new BoundIntegerValueFactory(1, Integer.MAX_VALUE));
+    	this.limitedHBox.visibleProperty().bind(this.limitedRadioButton.selectedProperty());
     }
     
     @Override
@@ -68,6 +84,13 @@ public class SavePageCodeBehind extends AbstractViewController {
     	
     	Color currentBackgroundColor = (Color) this.getViewModel().backgroundProperty().get().getFills().get(0).getFill();
     	this.backgroundColorPicker.setValue(currentBackgroundColor);
+    	
+    	if (this.getViewModel().numberOfLinesProperty().get() == Integer.MAX_VALUE) {
+    		this.unlimitedRadioButton.setSelected(true);
+    	} else {
+    		this.limitedRadioButton.setSelected(true);
+    		this.numberOfLinesSpinner.getValueFactory().setValue(this.getViewModel().numberOfLinesProperty().get());
+    	}
     }
     
     @FXML
@@ -77,7 +100,8 @@ public class SavePageCodeBehind extends AbstractViewController {
     	int fontSize = this.fontSizeSpinner.getValue();
     	Color fontColor = this.fontColorPicker.getValue();
     	Color backgroundColor = this.backgroundColorPicker.getValue();
-    	Setting setting = new Setting(selectedFont, sliderSpeed, fontSize, fontColor, backgroundColor);
+    	int numberOfLines = this.unlimitedRadioButton.isSelected() ? Integer.MAX_VALUE : this.numberOfLinesSpinner.getValue();
+    	Setting setting = new Setting(selectedFont, sliderSpeed, fontSize, fontColor, backgroundColor, numberOfLines);
     	
     	this.getViewModel().settingsProperty().setValue(setting);
     	
