@@ -23,6 +23,7 @@ public class StringExpander implements Commandable {
 	
 	private int currentIndex;
 	private int currentLineIndex;
+	private int maxLines;
 	private boolean isPaused;
 	
 	/**
@@ -33,7 +34,7 @@ public class StringExpander implements Commandable {
 	 * 
 	 * @param builder the StringBuilder to give to this expander.
 	 */
-	public StringExpander(String data) {
+	public StringExpander(String data, int maxLines) {
 		if (data == null) {
 			throw new IllegalArgumentException();
 		}
@@ -44,6 +45,7 @@ public class StringExpander implements Commandable {
 		
 		this.currentIndex = 0;
 		this.currentLineIndex = 0;
+		this.maxLines = maxLines;
 		this.unPause();
 	}
 
@@ -110,9 +112,7 @@ public class StringExpander implements Commandable {
 			this.updateContentIndices();
 		}
 		
-		// TODO: Make max lines a configurable setting.
-		final int maxLines = Integer.MAX_VALUE;
-		this.contentProperty.setValue(this.content.getContentFrom(this.currentLineIndex, this.currentIndex, maxLines));
+		this.contentProperty.setValue(this.content.getContentFrom(this.currentLineIndex, this.currentIndex, this.maxLines));
 	}
 	
 	private void updateContentIndices() {
